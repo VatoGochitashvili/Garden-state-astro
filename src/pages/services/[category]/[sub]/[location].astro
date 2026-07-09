@@ -346,7 +346,7 @@ const faqSchema = {
               <p class="text-accent font-bold uppercase tracking-widest text-xs mb-1">Free Quote</p>
               <h3 class="text-xl font-serif font-bold text-white mb-1">{subService.name} in {location.name}</h3>
               <p class="text-white/50 text-sm mb-5">We'll call back within minutes.</p>
-              <BookingForm client:visible darkBg preselectedService={subService.slug} />
+              <BookingForm client:load darkBg preselectedService={subService.slug} />
               <a href="tel:8565880580" class="flex items-center justify-center gap-2 w-full border border-white/20 text-white/70 text-sm font-semibold py-3 rounded-xl hover:bg-white/10 transition-colors mt-3">
                 <Phone className="h-4 w-4" /> Or call (856) 588-0580
               </a>
