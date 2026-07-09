@@ -1,0 +1,76 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Phone, Clock, ShieldCheck, MapPin } from "lucide-react";
+---
+
+<BaseLayout
+  title="Emergency Locksmith New Jersey | Fast Local Response | Garden State Locksmith"
+  description="Locked out? Lost your keys? Garden State Locksmith sends a licensed NJ technician fast — covering all of New Jersey. Call (856) 588-0580 for immediate help."
+  canonical="/emergency-locksmith"
+>
+  <div class="relative bg-destructive text-destructive-foreground py-24 overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.2)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+    <div class="container mx-auto px-4 relative z-10 text-center">
+      <div class="inline-flex items-center justify-center p-3 bg-white/20 rounded-full mb-6 animate-pulse">
+        <span class="font-bold text-lg tracking-wider uppercase">Immediate Dispatch</span>
+      </div>
+      <h1 class="text-4xl md:text-6xl font-serif font-black mb-6">Locked Out? Don't Panic.</h1>
+      <p class="text-xl md:text-2xl text-destructive-foreground/90 font-medium mb-10 max-w-2xl mx-auto">
+        Our local mobile units are standing by across New Jersey. We'll be there fast to get you safely back inside.
+      </p>
+      <a
+        href="tel:8565880580"
+        class="inline-flex items-center justify-center bg-white text-destructive font-black text-2xl px-12 py-8 h-auto rounded-md shadow-xl hover:bg-white/90 transition-colors"
+      >
+        <Phone className="mr-3 h-8 w-8" />
+        Call (856) 588-0580
+      </a>
+    </div>
+  </div>
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4 max-w-5xl">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div class="text-center p-6 bg-muted/50 rounded-xl">
+          <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
+          <h3 class="font-bold text-xl mb-2 font-serif">Fast Local Dispatch</h3>
+          <p class="text-muted-foreground">Typical arrival time for emergency calls in our service area.</p>
+        </div>
+        <div class="text-center p-6 bg-muted/50 rounded-xl">
+          <ShieldCheck className="h-12 w-12 text-primary mx-auto mb-4" />
+          <h3 class="font-bold text-xl mb-2 font-serif">Damage-Free Entry</h3>
+          <p class="text-muted-foreground">Expert techniques to unlock your door without breaking the lock.</p>
+        </div>
+        <div class="text-center p-6 bg-muted/50 rounded-xl">
+          <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
+          <h3 class="font-bold text-xl mb-2 font-serif">Fully Mobile</h3>
+          <p class="text-muted-foreground">We come to you with fully stocked vans ready for any situation.</p>
+        </div>
+      </div>
+
+      <div class="prose prose-lg dark:prose-invert max-w-none">
+        <h2 class="font-serif text-3xl font-bold text-foreground">24-Hour Emergency Locksmith Services</h2>
+        <p>
+          Lock emergencies happen when you least expect them—often at the worst possible times. Whether it's the middle of the night, early morning, or on a holiday, Garden State Locksmith is ready to assist you. As Camden County's premier local locksmith, we have technicians stationed throughout the area to ensure the fastest possible response time.
+        </p>
+
+        <h3 class="font-serif text-2xl font-bold text-foreground mt-8">What We Handle:</h3>
+        <ul>
+          <li><strong>House Lockouts:</strong> Fast, non-destructive entry if you've locked your keys inside or lost them.</li>
+          <li><strong>Car Lockouts:</strong> Safe vehicle entry without scratching the paint or damaging weather stripping.</li>
+          <li><strong>Commercial Lockouts:</strong> Getting your business open so you don't lose productivity.</li>
+          <li><strong>Broken Key Extraction:</strong> Removing keys snapped off in door locks or ignitions.</li>
+          <li><strong>Break-in Repairs:</strong> Securing your property immediately after a burglary with lock replacements and door hardware repair.</li>
+          <li><strong>Lost Key Replacement:</strong> On-the-spot key cutting and programming.</li>
+        </ul>
+
+        <div class="bg-primary/10 border-l-4 border-primary p-6 my-8 rounded-r-lg">
+          <h4 class="font-bold text-xl text-primary mt-0 mb-2">Beware of Locksmith Scams</h4>
+          <p class="m-0 text-foreground/80">
+            Beware of "$15 locksmith" ads that lure you in and then demand hundreds on arrival. Always verify your locksmith holds a valid NJ license before they begin work. Garden State Locksmith technicians are NJ licensed, bonded, and background-checked on every call.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

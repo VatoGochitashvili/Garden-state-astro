@@ -1,0 +1,130 @@
+---
+import { Phone, MapPin, Clock, ShieldCheck, Mail } from "lucide-react";
+import { services } from "@/data/services";
+import { locations } from "@/data/locations";
+import logoPath from "@/assets/footer-logo.png";
+
+const topLocations = locations.slice(0, 12);
+const mainServices = services.slice(0, 6);
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-primary text-primary-foreground pt-16 pb-8">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-12">
+      <!-- Brand Col -->
+      <div class="lg:col-span-2 flex flex-col gap-4">
+        <a href="/" class="flex items-center gap-2 bg-background p-2 rounded-md w-fit">
+          <img
+            src={logoPath.src}
+            alt="Garden State Locksmith Logo"
+            width="192"
+            height="48"
+            loading="lazy"
+            decoding="async"
+            class="h-12 w-auto"
+          />
+        </a>
+        <p class="text-primary-foreground/80 mt-2">
+          New Jersey's Trusted Locksmith Since 2009. Fast, reliable, and professional lock and key services.
+        </p>
+        <div class="flex items-center gap-2 mt-1">
+          <ShieldCheck className="h-5 w-5 text-accent" />
+          <span class="font-semibold text-accent">NJ Licensed & Insured</span>
+        </div>
+        <div class="flex flex-col gap-3 mt-2">
+          <a href="tel:8565880580" class="flex items-center gap-3 hover:text-accent transition-colors">
+            <Phone className="h-5 w-5" />
+            <span class="font-semibold text-lg">(856) 588-0580</span>
+          </a>
+          <div class="flex items-start gap-3 text-primary-foreground/80">
+            <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" />
+            <span>Serving All of New Jersey</span>
+          </div>
+          <a href="mailto:info@gardenstatelocksmithnj.com" class="flex items-center gap-3 hover:text-accent transition-colors text-primary-foreground/80">
+            <Mail className="h-5 w-5" />
+            <span>info@gardenstatelocksmithnj.com</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hours Col -->
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl overflow-hidden border border-accent/30" style="background: rgba(255,255,255,0.06);">
+          <div class="flex items-center gap-2 px-3 py-2 border-b border-accent/20" style="background: rgba(255,255,255,0.04);">
+            <Clock className="h-3.5 w-3.5 text-accent shrink-0" />
+            <h3 class="font-serif font-bold text-accent text-xs uppercase tracking-wide">Mobile Service Hours</h3>
+          </div>
+          <table class="w-full text-xs">
+            <tbody>
+              {[
+                ["Mon – Thu", "7:00 AM – 10:00 PM"],
+                ["Friday", "7:00 AM – 6:00 PM"],
+                ["Saturday", "Closed"],
+                ["Sunday", "7:00 AM – 10:00 PM"],
+              ].map(([day, hrs]) => (
+                <tr class="border-b border-white/5 last:border-0">
+                  <th scope="row" class="text-left font-semibold px-3 py-1.5 text-primary-foreground/80">{day}</th>
+                  <td class={`text-right px-3 py-1.5 font-mono ${hrs === "Closed" ? "text-primary-foreground/40 italic" : "text-accent/90"}`}>{hrs}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div class="px-3 py-2 border-t border-accent/20 text-center" style="background: rgba(255,255,255,0.04);">
+            <p class="text-xs text-accent font-semibold">NJ Licensed · Fast Local Response</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services Col -->
+      <div class="flex flex-col gap-3">
+        <h3 class="text-lg font-serif font-bold text-accent mb-1">Services</h3>
+        <ul class="flex flex-col gap-2 text-sm">
+          {mainServices.map((s) => (
+            <li>
+              <a href={`/services/${s.slug}`} class="hover:text-accent transition-colors">{s.name}</a>
+            </li>
+          ))}
+          <li><a href="/residential-locksmith" class="hover:text-accent transition-colors">Residential Locksmith</a></li>
+          <li><a href="/commercial-locksmith" class="hover:text-accent transition-colors">Commercial Locksmith</a></li>
+          <li><a href="/automotive-locksmith" class="hover:text-accent transition-colors">Automotive Locksmith</a></li>
+          <li>
+            <a href="/services" class="text-accent hover:underline font-semibold mt-1 inline-block">All Services &rarr;</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Service Areas Col -->
+      <div class="flex flex-col gap-3">
+        <h3 class="text-lg font-serif font-bold text-accent mb-1">Service Areas</h3>
+        <ul class="grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
+          {topLocations.map((l) => (
+            <li>
+              <a href={`/locations/${l.slug}`} class="hover:text-accent transition-colors">{l.name}</a>
+            </li>
+          ))}
+        </ul>
+        <a href="/locations" class="text-accent hover:underline font-semibold mt-1 inline-block text-sm">All Locations &rarr;</a>
+      </div>
+
+      <!-- Company Col -->
+      <div class="flex flex-col gap-3">
+        <h3 class="text-lg font-serif font-bold text-accent mb-1">Company</h3>
+        <ul class="flex flex-col gap-2 text-sm">
+          <li><a href="/about" class="hover:text-accent transition-colors">About Us</a></li>
+          <li><a href="/blog" class="hover:text-accent transition-colors">Security Blog</a></li>
+          <li><a href="/faq" class="hover:text-accent transition-colors">FAQ</a></li>
+          <li><a href="/contact" class="hover:text-accent transition-colors">Contact Us</a></li>
+          <li><a href="/emergency-locksmith" class="hover:text-accent transition-colors font-semibold">Emergency Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
+      <p>&copy; {year} Garden State Locksmith. All rights reserved. Serving New Jersey.</p>
+      <div class="flex gap-4">
+        <a href="/sitemap" class="hover:text-primary-foreground">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>

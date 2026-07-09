@@ -1,0 +1,143 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { ChevronDown } from "lucide-react";
+
+interface FAQItem { q: string; a: string; }
+interface FAQGroup { title: string; emoji: string; items: FAQItem[]; }
+
+const FAQ_GROUPS: FAQGroup[] = [
+  {
+    title: "General Questions",
+    emoji: "🔑",
+    items: [
+      { q: "Are you licensed and insured in New Jersey?", a: "Yes. Garden State Locksmith is fully licensed, bonded, and insured in the state of New Jersey. Every technician undergoes a thorough background check and holds NJ locksmith certification. We carry full liability insurance on every job." },
+      { q: "What areas of New Jersey do you serve?", a: "We serve all of New Jersey, with a primary focus on Camden, Burlington, Gloucester, Mercer, Salem, and Atlantic counties — covering over 90 cities and towns within roughly a 40-mile radius of Camden. Cities include Cherry Hill, Trenton, Hamilton, Moorestown, Deptford, Woodbury, Glassboro, Hammonton, and dozens more." },
+      { q: "What are your hours and do you offer emergency locksmith service?", a: "Absolutely. Our dispatch operates 7 AM – 10 PM Monday through Thursday and Sunday, 7 AM – 6 PM Friday, and we're closed Saturdays — holidays included. Lockouts, broken keys, and security breaches don't follow business hours, and neither do we." },
+      { q: "How long does it take for a locksmith to arrive in New Jersey?", a: "For most locations within our NJ service area, our average response time is same day. We maintain mobile units positioned throughout the region so that we can dispatch the closest available technician to your location." },
+      { q: "Do you accept credit cards?", a: "Yes. We accept all major credit cards (Visa, Mastercard, AmEx, Discover), cash, and business checks. Payment is processed securely on-site upon job completion." },
+      { q: "Will you provide a written receipt and warranty?", a: "Yes. Every service comes with a written receipt itemizing the work performed. Hardware installations carry a 90-day workmanship warranty. Defective parts are covered under the manufacturer's warranty, which we help facilitate." },
+    ],
+  },
+  {
+    title: "Emergency Locksmith",
+    emoji: "🚨",
+    items: [
+      { q: "I'm locked out of my house in New Jersey — what should I do?", a: "Call us immediately at (856) 588-0580. A licensed technician will be dispatched to your location. Do not attempt to force a door or window — you risk damage and injury. Our non-destructive entry methods open 95%+ of residential doors without any damage to the lock or door frame." },
+      { q: "Can you open a locked door without breaking it?", a: "In the vast majority of cases, yes. Our technicians are trained in professional lock picking, bypass tools, and specialized entry techniques. Only in rare cases involving heavily fortified or anti-pick locks might drilling be necessary — and we always notify you before proceeding." },
+      { q: "I broke a key inside my lock — can you fix it?", a: "Yes. Broken key extraction is one of our most common service calls. We use specialized extraction tools to remove the key fragment without damaging the lock cylinder. If the lock is damaged during the break, we can rekey or replace it on the same visit." },
+      { q: "Someone broke into my NJ home — what should I do for security?", a: "After contacting police and filing a report, call us immediately. We provide emergency lock change and door reinforcement service following break-ins. We'll assess all entry points, replace compromised hardware, and recommend additional security measures to prevent recurrence." },
+      { q: "Do you charge extra for emergency calls at night or on weekends?", a: "No hidden surcharges or after-hours fees. The quote we give you on the phone is the same regardless of the time of day or day of the week — including nights, weekends, and holidays." },
+    ],
+  },
+  {
+    title: "Residential Locksmith",
+    emoji: "🏠",
+    items: [
+      { q: "Should I rekey or replace my locks when moving into a new NJ home?", a: "Rekeying is strongly recommended when moving into any new home in New Jersey. The previous owners, real estate agents, contractors, and cleaning crews may all have copies of your keys. Rekeying changes the internal pin tumblers so only your new keys work — at a fraction of the cost of full replacement. If the hardware is old or damaged, replacement makes more sense." },
+      { q: "What's the difference between rekeying and replacing a lock?", a: "Rekeying changes the internal pins so the old key no longer works but keeps the existing hardware. It's ideal when your lock is in good condition. Lock replacement involves installing entirely new hardware — recommended when upgrading security grade, changing lock type, or repairing damage." },
+      { q: "What are the best locks for a New Jersey home?", a: "We recommend ANSI Grade 1 deadbolts for all exterior doors. Top brands include Schlage B60N, Kwikset 980, and Medeco M3. For smart lock upgrades, the Schlage Encode Plus and Yale Assure 2 are excellent choices. For maximum security, Medeco and Mul-T-Lock cylinders offer pick and bump resistance." },
+      { q: "Can you install a smart lock at my NJ home?", a: "Yes. We professionally install all major smart lock brands — Schlage Encode, August Wi-Fi, Yale Assure, Kwikset Halo Touch, and more. We handle setup, programming, and integration with your existing smart home system. We also verify the installation meets ANSI Grade 1 standards." },
+      { q: "Can you make a key without the original?", a: "Yes. For standard residential keys, we can decode the lock and cut a new key on-site. For high-security locks with restricted keyways, we have authorized key blanks on our mobile units for most major brands." },
+      { q: "How do I know if my mailbox lock needs to be replaced?", a: "Common signs include the key turning with difficulty, the lock not latching properly, visible rust or corrosion, or if you've lost your only key. Mailbox lock replacement is quick and affordable — typically 15–20 minutes on-site." },
+    ],
+  },
+  {
+    title: "Commercial Locksmith",
+    emoji: "🏢",
+    items: [
+      { q: "What commercial locksmith services do you offer in New Jersey?", a: "We provide the full range of commercial locksmith services: commercial lock installation and replacement, master key system design, electronic access control systems (keycard/fob), high-security lock installation (Medeco, Mul-T-Lock, ABLOY), panic bar and exit device installation, safe opening and installation, and door closer and hardware replacement." },
+      { q: "Can you set up a master key system for my NJ business?", a: "Yes. We design and implement custom master key systems that allow management to access all areas while restricting employees to their relevant zones. We use restricted keyway systems with key control to prevent unauthorized duplication. Systems are designed for easy scalability as your business grows." },
+      { q: "Can you install a keycard or fob access control system?", a: "Absolutely. We install proximity card, fob, and PIN-based access control systems from HID, Schlage, and Allegion. Benefits include audit trails, instant credential deactivation for terminated employees, time-based access restrictions, and multi-door management from a single admin interface." },
+      { q: "Do you work on commercial panic bars and exit devices?", a: "Yes. We install, repair, and replace panic hardware (Von Duprin, Dorma, Yale) and ensure your emergency exits comply with New Jersey fire code requirements. This is critical for commercial properties — non-compliant exit hardware can result in code violations." },
+      { q: "My employee was terminated — how do I quickly secure my business?", a: "For key-based systems, we can rekey affected locks same-day to invalidate their keys. For electronic access systems, we can remotely deactivate their credentials immediately. We recommend a free security consultation to assess your entire access control policy." },
+    ],
+  },
+  {
+    title: "Automotive Locksmith",
+    emoji: "🚗",
+    items: [
+      { q: "I locked my keys inside my car in NJ — can you help?", a: "Yes, immediately. We respond to car lockouts across all of New Jersey, 7 AM – 10 PM. Our mobile technicians use professional slim jim tools, long-reach tools, and air wedge systems to open your vehicle without any damage. Average arrival time: same day." },
+      { q: "Can you make a car key without the original?", a: "Yes. We carry key cutting equipment and transponder programming tools for most vehicle makes and models on our mobile units. Even if you've lost all your keys, we can cut and program a new key or fob on-site — in most cases faster and cheaper than a dealership." },
+      { q: "Can you program a car key fob or transponder?", a: "Yes. We program transponder keys, push-to-start smart keys, and remote key fobs for most domestic and import vehicles on-site. This includes Toyota, Honda, Ford, GM, BMW, Mercedes, Hyundai, Kia, and more. We'll test the key fully before completing the service." },
+      { q: "My ignition is stuck or broken — can you fix it?", a: "Yes. Ignition cylinder repair and replacement is a common automotive locksmith service. We can repair a worn ignition switch, extract a broken key from the ignition, or replace the entire ignition cylinder if needed — often without removing the steering column." },
+      { q: "Is a locksmith cheaper than a dealership for car keys?", a: "In most cases, yes — significantly. Dealerships typically charge $200–$600+ for replacement keys with programming, plus require you to tow the vehicle. We come to you and complete the same service on-site, often at 40–60% of the dealership cost." },
+      { q: "Do you work on motorcycles and commercial vehicles?", a: "Yes. We service most motorcycle brands (Harley-Davidson, Honda, Yamaha, Kawasaki, BMW) and commercial vehicles including vans and light trucks. Call us and we'll confirm compatibility before dispatching." },
+    ],
+  },
+];
+
+const totalQuestions = FAQ_GROUPS.reduce((sum, g) => sum + g.items.length, 0);
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_GROUPS.flatMap((g) =>
+    g.items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  ),
+};
+
+const slugify = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
+---
+
+<BaseLayout
+  title="Locksmith FAQ — New Jersey | Common Questions Answered | Garden State Locksmith"
+  description="Answers to the most common locksmith questions in New Jersey: emergency lockouts, car key replacement, rekeying vs replacing, smart locks, commercial access control, and more."
+  canonical="/faq"
+  schema={faqSchema}
+>
+  <div class="relative overflow-hidden text-white py-20" style="background: #0c1410;">
+    <img src="/van-bg.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80 pointer-events-none" />
+    <div class="container mx-auto px-4 relative z-10 text-center max-w-3xl">
+      <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">Frequently Asked Questions</p>
+      <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4 drop-shadow-lg">NJ Locksmith FAQ</h1>
+      <p class="text-white/70 text-lg mb-6">
+        {totalQuestions} questions answered about lockouts, car keys, residential security, and commercial locksmith services across New Jersey.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3 text-sm">
+        {FAQ_GROUPS.map((g) => (
+          <a href={`#${slugify(g.title)}`} class="bg-white/10 hover:bg-white/20 border border-white/20 rounded-full px-4 py-1.5 text-white/80 transition-colors">
+            {g.emoji} {g.title}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4 max-w-4xl">
+      {FAQ_GROUPS.map((group) => (
+        <div id={slugify(group.title)} class="mb-14 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-3xl">{group.emoji}</span>
+            <h2 class="text-2xl font-serif font-bold text-foreground">{group.title}</h2>
+          </div>
+          <div class="flex flex-col gap-3">
+            {group.items.map((item) => (
+              <details class="group border border-border/60 rounded-xl overflow-hidden [&[open]]:border-primary/40 [&[open]]:bg-primary/5">
+                <summary class="flex items-start justify-between px-6 py-5 cursor-pointer gap-4 hover:bg-primary/5 transition-colors list-none [&::-webkit-details-marker]:hidden">
+                  <span class="font-serif font-bold text-foreground text-base leading-snug pr-4">{item.q}</span>
+                  <ChevronDown className="h-5 w-5 text-primary shrink-0 mt-0.5 transition-transform duration-300 group-open:rotate-180" />
+                </summary>
+                <div class="px-6 pb-5 text-muted-foreground leading-relaxed border-t border-border/40 pt-4">{item.a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div class="rounded-2xl bg-primary/5 border border-primary/20 p-8 text-center mt-4">
+        <h3 class="font-serif font-bold text-xl mb-2">Didn't Find Your Answer?</h3>
+        <p class="text-muted-foreground mb-5">Call us directly or browse our service pages — our technicians can answer any question specific to your lock or security situation.</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="tel:8565880580" class="flex items-center gap-2 bg-primary text-primary-foreground font-bold px-7 py-3 rounded-full hover:bg-primary/90 transition-colors">Call (856) 588-0580</a>
+          <a href="/services" class="flex items-center gap-2 border border-primary text-primary font-bold px-7 py-3 rounded-full hover:bg-primary/5 transition-colors">Browse Services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

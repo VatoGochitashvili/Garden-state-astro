@@ -1,0 +1,91 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroBanner from "@/components/shared/HeroBanner.astro";
+import EmergencyCTA from "@/components/shared/EmergencyCTA.astro";
+import TestimonialSection from "@/components/shared/TestimonialSection.astro";
+import { ShieldCheck, Key, Lock, Home, Wrench } from "lucide-react";
+
+const residentialServices = [
+  { icon: Lock, title: "House Lockout Service", desc: "Locked out of your home? Our technicians arrive promptly throughout New Jersey and use non-destructive entry methods to get you back inside fast.", link: "/services/emergency/house-lockout" },
+  { icon: Key, title: "Lock Rekeying", desc: "Changed your locks after moving? Lost a key? Rekeying is the fastest, most affordable way to ensure old keys no longer work on your home's locks.", link: "/services/residential/lock-rekeying" },
+  { icon: ShieldCheck, title: "Deadbolt Installation", desc: "Upgrade to ANSI Grade 1 deadbolts — the strongest available for residential use. We install Schlage, Kwikset, Medeco, and other top brands.", link: "/services/deadbolt-installation" },
+  { icon: Wrench, title: "Lock Repair", desc: "Sticking, grinding, or jammed locks are a security risk and daily frustration. We repair or replace faulty hardware same-day throughout NJ.", link: "/services/lock-repair" },
+  { icon: Home, title: "Smart Lock Installation", desc: "Let us install and program your Schlage Encode, August, Yale, or Kwikset smart lock — including WiFi configuration and app setup.", link: "/services/residential/smart-lock-installation" },
+  { icon: Key, title: "Master Key Systems", desc: "Want one key to open every lock in your home? We design and implement residential master key systems with precision-cut keys and secure cylinders.", link: "/services/master-key-systems" },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Residential Locksmith Services New Jersey",
+  provider: { "@type": "LocalBusiness", name: "Garden State Locksmith", telephone: "+18565880580", areaServed: "New Jersey" },
+  serviceType: "Residential Locksmith",
+  description: "Professional residential locksmith services throughout New Jersey including lockouts, rekeying, deadbolt installation, and smart lock setup.",
+  areaServed: { "@type": "State", name: "New Jersey" },
+};
+---
+
+<BaseLayout
+  title="Residential Locksmith Services New Jersey | Garden State Locksmith"
+  description="Trusted residential locksmith in New Jersey. House lockouts, lock rekeying, deadbolt installation, smart locks & more. 7 AM – 10 PM service. Call (856) 588-0580."
+  canonical="/residential-locksmith"
+  schema={jsonLd}
+>
+  <HeroBanner
+    h1="Residential Locksmith Services in New Jersey"
+    subtitle="From urgent house lockouts to full home security upgrades — Garden State Locksmith is your trusted neighborhood locksmith available 7 AM – 10 PM across New Jersey."
+    emergency={true}
+    image="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1600&q=80"
+  />
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Our Residential Locksmith Services</h2>
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Every service performed by licensed, background-checked technicians. We protect New Jersey homes every day.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {residentialServices.map((s) => (
+          <div class="rounded-xl border border-border/60 hover:shadow-md transition-shadow p-6">
+            <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+              <s.icon className="h-6 w-6" />
+            </div>
+            <h3 class="font-serif font-bold text-xl mb-2">{s.title}</h3>
+            <p class="text-muted-foreground text-sm mb-4">{s.desc}</p>
+            <a href={s.link} class="text-primary font-semibold text-sm hover:underline">Learn More &rarr;</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-muted/30 border-y border-border/50">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl font-serif font-bold mb-6">Why New Jersey Homeowners Trust Us</h2>
+          <div class="flex flex-col gap-4">
+            {["NJ State Licensed & Fully Insured", "Satisfaction guaranteed on every job", "fast local dispatch", "Non-destructive entry — we won't damage your door", "Available 7 AM – 10 PM, 6 days a week", "Serving all of New Jersey since 2009"].map((item) => (
+              <div class="flex items-center gap-3">
+                <ShieldCheck className="h-5 w-5 text-accent flex-shrink-0" />
+                <span class="text-foreground font-medium">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="relative rounded-xl overflow-hidden h-72">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Residential lock installation" loading="lazy" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-primary/30" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <TestimonialSection />
+  <EmergencyCTA
+    title="Locked Out of Your Home?"
+    description="Don't wait outside in the cold or dark. Garden State Locksmith dispatches immediately, 7 AM – 10 PM, throughout all of New Jersey."
+  />
+</BaseLayout>

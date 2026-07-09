@@ -1,0 +1,28 @@
+---
+import { ChevronDown } from "lucide-react";
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  faqs: FAQ[];
+}
+
+const { faqs } = Astro.props;
+---
+
+<div class="w-full max-w-3xl mx-auto">
+  {faqs.map((faq) => (
+    <details class="group border-b border-border">
+      <summary class="flex items-center justify-between py-4 cursor-pointer font-semibold text-lg text-left list-none hover:text-primary transition-colors [&::-webkit-details-marker]:hidden">
+        {faq.question}
+        <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180" />
+      </summary>
+      <div class="text-muted-foreground text-base leading-relaxed pb-4">
+        {faq.answer}
+      </div>
+    </details>
+  ))}
+</div>

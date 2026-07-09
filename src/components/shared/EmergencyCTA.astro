@@ -1,0 +1,38 @@
+---
+import { PhoneCall } from "lucide-react";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Locked Out? Need Immediate Assistance?",
+  description = "Our mobile locksmiths are standing by 7 AM – 10 PM. Fast dispatch throughout New Jersey and surrounding areas.",
+} = Astro.props;
+---
+
+<section class="relative overflow-hidden py-16" style="background-color: hsl(var(--primary));">
+  <div class="absolute inset-0 pointer-events-none">
+    <img
+      src="https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?w=1600&q=80"
+      alt=""
+      class="w-full h-full object-cover opacity-20 mix-blend-luminosity"
+      loading="lazy"
+    />
+  </div>
+
+  <div class="container mx-auto px-4 text-center relative z-10">
+    <div class="inline-flex items-center justify-center p-4 bg-white/10 rounded-full mb-6">
+      <PhoneCall className="h-10 w-10 text-primary-foreground" />
+    </div>
+    <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4 text-primary-foreground">{title}</h2>
+    <p class="text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">{description}</p>
+    <a
+      href="tel:8565880580"
+      class="inline-flex items-center justify-center font-bold text-xl px-10 py-6 h-auto rounded-md bg-accent text-accent-foreground hover:bg-accent/90 transition-colors"
+    >
+      Call (856) 588-0580 Now
+    </a>
+  </div>
+</section>

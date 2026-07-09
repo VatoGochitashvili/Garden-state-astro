@@ -1,0 +1,103 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroBanner from "@/components/shared/HeroBanner.astro";
+import EmergencyCTA from "@/components/shared/EmergencyCTA.astro";
+import TestimonialSection from "@/components/shared/TestimonialSection.astro";
+import { Car, Key, Settings, Wrench, ShieldCheck, AlertTriangle } from "lucide-react";
+
+const autoServices = [
+  { icon: Car, title: "Car Lockout Service", desc: "Keys locked inside? Our mobile locksmiths use slim jim tools and air wedges to open your vehicle without damage. Fast dispatch throughout New Jersey.", link: "/services/car-lockout-service" },
+  { icon: Key, title: "Car Key Replacement", desc: "Lost all your keys? We cut and program new keys for most makes and models on-site — no dealership tow required. Often faster and cheaper than the dealer.", link: "/services/automotive/car-key-replacement" },
+  { icon: Settings, title: "Transponder Key Programming", desc: "Modern vehicles require programmed transponder chips to start. We program transponder keys, proximity fobs, and push-to-start systems for hundreds of vehicle models.", link: "/services/transponder-key-programming" },
+  { icon: Wrench, title: "Ignition Repair & Replacement", desc: "Stuck key, worn ignition, or complete ignition failure — we repair and replace ignition cylinders on-site for most vehicle makes and models.", link: "/services/ignition-repair" },
+  { icon: AlertTriangle, title: "Broken Key Extraction", desc: "A key snapped off in your ignition or door lock? We extract broken keys safely without damaging the lock cylinder, then cut a replacement on the spot.", link: "/services/emergency/broken-key-extraction" },
+  { icon: Key, title: "Key Fob & Remote Programming", desc: "Replacement key fobs programmed to your vehicle's security system. We work with all major brands and handle the full programming process.", link: "/services/automotive/key-fob-replacement" },
+];
+
+const vehicles = ["Ford", "Chevrolet", "Toyota", "Honda", "Nissan", "Hyundai", "Kia", "Jeep", "Ram", "GMC", "BMW", "Mercedes-Benz", "Audi", "Volkswagen", "Subaru", "Mazda"];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Automotive Locksmith Services New Jersey",
+  provider: { "@type": "LocalBusiness", name: "Garden State Locksmith", telephone: "+18565880580", areaServed: "New Jersey" },
+  serviceType: "Automotive Locksmith",
+  description: "Professional automotive locksmith services in New Jersey: car lockouts, key replacement, transponder programming, ignition repair, and key fob programming.",
+};
+---
+
+<BaseLayout
+  title="Automotive Locksmith New Jersey | Car Keys & Lockout Service | Garden State"
+  description="Fast automotive locksmith service throughout New Jersey. Car lockouts, key replacement, transponder programming & ignition repair. On-site service. Call (856) 588-0580."
+  canonical="/automotive-locksmith"
+  schema={jsonLd}
+>
+  <HeroBanner
+    h1="Automotive Locksmith Services in New Jersey"
+    subtitle="Locked out of your car? Need a new key programmed? Garden State Locksmith's mobile automotive units cover all of New Jersey — we come to you."
+    emergency={true}
+    image="https://images.unsplash.com/photo-1549317336-206569e8475c?w=1600&q=80"
+  />
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Automotive Locksmith Services</h2>
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto">We come to your location — parking lots, roadsides, driveways, or anywhere else in New Jersey. No towing required.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {autoServices.map((s) => (
+          <div class="rounded-xl border border-border/60 hover:shadow-md transition-shadow p-6">
+            <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+              <s.icon className="h-6 w-6" />
+            </div>
+            <h3 class="font-serif font-bold text-xl mb-2">{s.title}</h3>
+            <p class="text-muted-foreground text-sm mb-4">{s.desc}</p>
+            <a href={s.link} class="text-primary font-semibold text-sm hover:underline">Learn More &rarr;</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-muted/30 border-y border-border/50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-serif font-bold mb-4 text-center">Vehicles We Service</h2>
+      <p class="text-muted-foreground text-center mb-8">We carry key blanks and programming equipment for hundreds of models. Don't see yours? Call us — chances are we can help.</p>
+      <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+        {vehicles.map((v) => (
+          <span class="bg-card border border-border px-4 py-2 rounded-full text-sm font-semibold text-foreground">{v}</span>
+        ))}
+        <span class="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-semibold">+ Many More</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <h2 class="text-3xl font-serif font-bold mb-8 text-center">Why Choose Us Over the Dealership?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[
+          { label: "We come to you", desc: "No towing your car to a dealership — we program keys on-site wherever you are in NJ." },
+          { label: "Faster service", desc: "Dealerships often take days. We arrive within 30 minutes and program keys in 1–2 hours." },
+          { label: "Significantly lower cost", desc: "Dealer key replacements can cost $300–$600+. We typically charge 30–50% less." },
+          { label: "Available 7 AM – 10 PM", desc: "Dealerships close at 5 PM. We're open 7 AM – 10 PM, six days a week across NJ." },
+        ].map((item) => (
+          <div class="flex gap-4 p-6 border border-border rounded-xl">
+            <ShieldCheck className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
+            <div>
+              <h3 class="font-bold text-foreground mb-1">{item.label}</h3>
+              <p class="text-muted-foreground text-sm">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <TestimonialSection />
+  <EmergencyCTA
+    title="Car Lockout? Keys Locked Inside?"
+    description="Don't break your window. Garden State Locksmith's mobile automotive units cover all of New Jersey 7 AM – 10 PM, 6 days a week."
+  />
+</BaseLayout>

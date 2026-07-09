@@ -1,0 +1,147 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { BookingForm } from "@/components/shared/BookingForm";
+import EmergencyCTA from "@/components/shared/EmergencyCTA.astro";
+import { categories } from "@/data/categories";
+import { locations } from "@/data/locations";
+import { Phone, ShieldCheck, MapPin, Clock, ChevronRight, ArrowRight } from "lucide-react";
+
+export function getStaticPaths() {
+  return locations.map((loc) => ({ params: { location: loc.slug }, props: { location: loc } }));
+}
+
+const { location } = Astro.props;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: `Garden State Locksmith - ${location.name}`,
+  description: `Professional locksmith services in ${location.name}, NJ.`,
+  telephone: "+18565880580",
+  areaServed: {
+    "@type": "City",
+    name: location.name,
+    containedInPlace: { "@type": "State", name: "New Jersey" },
+  },
+};
+---
+
+<BaseLayout
+  title={`Locksmith in ${location.name}, NJ | Licensed Local Service | Garden State Locksmith`}
+  description={`Need a reliable locksmith in ${location.name}, NJ? Garden State Locksmith provides fast emergency, residential, and auto services in the ${location.zipCodes[0]} area.`}
+  canonical={`/locations/${location.slug}`}
+  schema={schema}
+>
+  <div class="relative overflow-hidden" style="background: #0c1410; min-height: 520px;">
+    <img src="/van-bg.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" />
+    <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/75 pointer-events-none" />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
+
+    <div class="relative container mx-auto px-4 py-20 lg:py-28">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <nav class="flex items-center gap-1 text-white/40 text-xs font-semibold uppercase tracking-wide mb-5">
+            <a href="/" class="hover:text-white transition-colors">Home</a>
+            <ChevronRight className="h-3 w-3" />
+            <a href="/locations" class="hover:text-white transition-colors">Locations</a>
+            <ChevronRight className="h-3 w-3" />
+            <span class="text-accent">{location.name}</span>
+          </nav>
+
+          <div class="inline-flex items-center rounded-full border border-accent/50 bg-accent/15 px-3 py-1 text-sm font-semibold text-accent mb-5">
+            <span class="flex h-2 w-2 rounded-full bg-accent mr-2 animate-pulse" />
+            Fast Response · Licensed NJ Technicians
+          </div>
+
+          <p class="text-accent font-bold uppercase tracking-[0.2em] text-xs mb-2">{location.county}</p>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-4 text-white">
+            Locksmith in<br />
+            <span class="text-accent">{location.name}, NJ</span>
+          </h1>
+          <p class="text-lg text-white/70 mb-6 leading-relaxed max-w-lg">
+            {location.description} Fast, local, and professional lock and key services for every home, business, and vehicle in {location.name}.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-6">
+            <a href="tel:8565880580" class="flex items-center gap-2 bg-accent text-white font-bold px-7 py-3.5 rounded-full hover:bg-accent/90 transition-colors text-base">
+              <Phone className="h-5 w-5" /> (856) 588-0580
+            </a>
+            <div class="flex items-center gap-2 border border-white/20 text-white/70 font-semibold px-5 py-3 rounded-full text-sm">
+              <Clock className="h-4 w-4 text-accent" /> Fast Local Dispatch
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-4 text-sm font-semibold text-white/50">
+            <span class="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-accent" /> Licensed & Insured</span>
+            <span class="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-accent" /> {location.zipCodes.join(" · ")}</span>
+            <span class="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-accent" /> Background-Checked</span>
+          </div>
+        </div>
+
+        <div class="lg:pl-6">
+          <div class="rounded-2xl border border-white/15 p-7" style="background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);">
+            <p class="text-accent font-bold uppercase tracking-widest text-xs mb-1">Free Quote</p>
+            <h2 class="text-2xl font-serif font-bold text-white mb-1">Schedule Service</h2>
+            <p class="text-white/50 text-sm mb-5">Serving {location.name} — we'll call back within minutes.</p>
+            <BookingForm client:visible darkBg compact />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4 max-w-4xl text-center">
+      <h2 class="font-serif text-3xl font-bold text-foreground mb-6">Serving {location.name} and {location.county}</h2>
+      <p class="text-lg text-muted-foreground mb-8">
+        Garden State Locksmith is proud to serve the community of {location.name}. {location.description} Whether you're locked out of your home near the center of town, need new locks installed at your business, or require emergency car key replacement, our mobile technicians are just a quick call away. We know the {location.zipCodes[0]} area well, ensuring rapid response times when you need us most.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-muted/30 border-y border-border">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-2xl mx-auto">
+        <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">Full Service Menu</p>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-foreground mb-3">Every Locksmith Service in {location.name}</h2>
+        <p class="text-muted-foreground">
+          From emergency lockouts to commercial access control — we cover every lock, key, and security need across {location.name}.
+        </p>
+      </div>
+
+      <div class="space-y-10">
+        {categories.map((cat) => (
+          <div>
+            <div class="flex items-center justify-between mb-5 pb-3 border-b border-border/60">
+              <div class="flex items-center gap-3">
+                <span class="text-3xl">{cat.emoji}</span>
+                <div>
+                  <h3 class="text-xl md:text-2xl font-serif font-bold text-foreground">{cat.name}</h3>
+                  <p class="text-sm text-muted-foreground">{cat.subServices.length} services in {location.name}</p>
+                </div>
+              </div>
+              <a href={`/services/${cat.slug}`} class="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-accent transition-colors">
+                View category <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {cat.subServices.map((sub) => (
+                <a href={`/services/${cat.slug}/${sub.slug}/${location.slug}`} class="group flex items-start gap-3 bg-background border border-border/60 rounded-xl p-4 hover:border-accent hover:shadow-md transition-all">
+                  <div class="shrink-0 h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center text-lg group-hover:bg-accent/15 transition-colors">{cat.emoji}</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="font-serif font-bold text-sm text-foreground leading-tight mb-1 group-hover:text-primary transition-colors">{sub.name}</p>
+                    <p class="text-xs text-muted-foreground line-clamp-2 leading-snug">{sub.shortDesc}</p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-accent transition-colors shrink-0 mt-1" />
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <EmergencyCTA description={`Our mobile locksmiths serve ${location.name}, NJ — licensed, fast, and local.`} />
+</BaseLayout>

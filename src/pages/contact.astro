@@ -1,0 +1,70 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroBanner from "@/components/shared/HeroBanner.astro";
+import { ContactForm } from "@/components/shared/ContactForm";
+import { Phone, MapPin, Clock } from "lucide-react";
+---
+
+<BaseLayout
+  title="Contact Us | Garden State Locksmith"
+  description="Contact Garden State Locksmith for fast emergency service, free quotes, and appointments in New Jersey. Call (856) 588-0580."
+  canonical="/contact"
+>
+  <HeroBanner h1="Contact Us" subtitle="We're here when you need us. Reach out for emergency assistance, quotes, or to schedule a service." />
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-3xl font-serif font-bold mb-6 text-foreground">Get In Touch</h2>
+          <p class="text-lg text-muted-foreground mb-8">
+            For immediate emergency assistance, please call us directly. For all other inquiries, feel free to call or fill out the contact form.
+          </p>
+
+          <div class="space-y-6">
+            <div class="rounded-xl bg-muted/50 p-6 flex items-start gap-4">
+              <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Phone className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 class="font-bold text-lg mb-1">Phone</h3>
+                <p class="text-muted-foreground mb-2">Fast Response & Scheduling</p>
+                <a href="tel:8565880580" class="text-xl font-bold text-primary hover:text-accent transition-colors">(856) 588-0580</a>
+              </div>
+            </div>
+
+            <div class="rounded-xl bg-muted/50 p-6 flex items-start gap-4">
+              <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <MapPin className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 class="font-bold text-lg mb-1">Service Area</h3>
+                <p class="text-muted-foreground">Serving all of Camden County, NJ</p>
+                <p class="text-sm text-muted-foreground mt-1">Mobile units dispatched locally.</p>
+              </div>
+            </div>
+
+            <div class="rounded-xl bg-muted/50 p-6 flex items-start gap-4">
+              <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Clock className="h-6 w-6" />
+              </div>
+              <div class="w-full">
+                <h3 class="font-bold text-lg mb-2">Hours</h3>
+                <dl class="text-sm text-muted-foreground space-y-1">
+                  <div class="flex justify-between gap-4"><dt>Mon – Thu</dt><dd class="font-medium text-foreground">7:00 AM – 10:00 PM</dd></div>
+                  <div class="flex justify-between gap-4"><dt>Friday</dt><dd class="font-medium text-foreground">7:00 AM – 6:00 PM</dd></div>
+                  <div class="flex justify-between gap-4"><dt>Saturday</dt><dd class="font-medium text-foreground">Closed</dd></div>
+                  <div class="flex justify-between gap-4"><dt>Sunday</dt><dd class="font-medium text-foreground">7:00 AM – 10:00 PM</dd></div>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-card p-8 rounded-xl shadow-sm border border-border">
+          <h2 class="text-2xl font-serif font-bold mb-6 text-foreground">Send a Message</h2>
+          <ContactForm client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,397 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { BookingForm } from "@/components/shared/BookingForm";
+import EmergencyCTA from "@/components/shared/EmergencyCTA.astro";
+import FAQAccordion from "@/components/shared/FAQAccordion.astro";
+import { categories } from "@/data/categories";
+import { services } from "@/data/services";
+import { locations } from "@/data/locations";
+import { generateServiceLocationContent } from "@/data/content";
+import { Phone, Clock, CheckCircle2, ChevronRight, ArrowRight, MapPin, ShieldCheck } from "lucide-react";
+
+export function getStaticPaths() {
+  const subServicePaths = categories.flatMap((cat) =>
+    cat.subServices.map((sub) => ({
+      params: { a: cat.slug, b: sub.slug },
+      props: { kind: "subservice" as const, category: cat, subService: sub },
+    })),
+  );
+  const serviceLocationPaths = services.flatMap((svc) =>
+    locations.map((loc) => ({
+      params: { a: svc.slug, b: loc.slug },
+      props: { kind: "servicelocation" as const, service: svc, location: loc },
+    })),
+  );
+  return [...subServicePaths, ...serviceLocationPaths];
+}
+
+const { kind } = Astro.props;
+---
+
+{kind === "subservice" ? (
+  (() => {
+    const category = Astro.props.category;
+    const subService = Astro.props.subService;
+    const absoluteImage = subService.image.startsWith("http") ? subService.image : `https://gardenstatelocksmithnj.com${subService.image}`;
+    const schemaData = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: `${subService.name} in New Jersey`,
+      description: subService.longDesc,
+      image: absoluteImage,
+      serviceType: subService.name,
+      provider: {
+        "@type": "LocalBusiness",
+        name: "Garden State Locksmith",
+        telephone: "+18565880580",
+        image: absoluteImage,
+        address: { "@type": "PostalAddress", addressRegion: "NJ", addressCountry: "US" },
+      },
+      areaServed: { "@type": "State", name: "New Jersey" },
+      offers: { "@type": "Offer", description: subService.shortDesc },
+    };
+    const relatedServices = category.subServices.filter((s: typeof category.subServices[number]) => s.slug !== subService.slug).slice(0, 3);
+    const counties = Array.from(new Set(locations.map((l) => l.county)));
+
+    return (
+      <BaseLayout
+        title={`${subService.name} in New Jersey | Garden State Locksmith`}
+        description={subService.longDesc.slice(0, 155)}
+        canonical={`/services/${category.slug}/${subService.slug}`}
+        imageUrl={subService.image}
+        schema={schemaData}
+      >
+        <div class="relative min-h-[380px] flex items-end overflow-hidden bg-foreground">
+          <img
+            src={subService.image}
+            alt={`${subService.name} service by Garden State Locksmith — licensed locksmith serving New Jersey`}
+            width="1600"
+            height="900"
+            fetchpriority="high"
+            decoding="async"
+            class="absolute inset-0 w-full h-full object-cover opacity-35"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-transparent" />
+          <div class="relative container mx-auto px-4 pb-14 pt-28">
+            <nav class="flex items-center gap-2 text-white/50 text-xs font-semibold uppercase tracking-wide mb-5 flex-wrap">
+              <a href="/" class="hover:text-white transition-colors">Home</a>
+              <ChevronRight className="h-3 w-3" />
+              <a href="/services" class="hover:text-white transition-colors">Services</a>
+              <ChevronRight className="h-3 w-3" />
+              <a href={`/services/${category.slug}`} class="hover:text-white transition-colors">{category.name}</a>
+              <ChevronRight className="h-3 w-3" />
+              <span class="text-accent">{subService.name}</span>
+            </nav>
+            <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">{category.emoji} {category.name}</p>
+            <h1 class="text-4xl md:text-5xl font-serif font-black text-white leading-none mb-4">
+              {subService.name} <br />
+              <span class="text-accent">New Jersey</span>
+            </h1>
+            <p class="text-white/70 text-lg max-w-2xl mb-8">{subService.shortDesc}</p>
+            <div class="flex flex-wrap gap-4">
+              <a href="tel:8565880580" class="flex items-center gap-2 bg-primary text-primary-foreground font-bold px-7 py-3.5 rounded-full hover:bg-primary/90 transition-colors text-lg">
+                <Phone className="h-5 w-5" /> Call Now: (856) 588-0580
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-primary text-primary-foreground">
+          <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 divide-x divide-primary-foreground/20">
+              <div class="flex items-center gap-3 py-5 px-4">
+                <Clock className="h-5 w-5 text-accent shrink-0" />
+                <div>
+                  <p class="text-xs text-primary-foreground/60 font-semibold uppercase tracking-wide">Response Time</p>
+                  <p class="font-bold text-sm">{subService.responseTime}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 py-5 px-4">
+                <CheckCircle2 className="h-5 w-5 text-accent shrink-0" />
+                <div>
+                  <p class="text-xs text-primary-foreground/60 font-semibold uppercase tracking-wide">Coverage</p>
+                  <p class="font-bold text-sm">All of New Jersey</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 py-5 px-4">
+                <CheckCircle2 className="h-5 w-5 text-accent shrink-0" />
+                <div>
+                  <p class="text-xs text-primary-foreground/60 font-semibold uppercase tracking-wide">Technicians</p>
+                  <p class="font-bold text-sm">NJ Licensed & Insured</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="py-16 bg-background">
+          <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              <div class="lg:col-span-2">
+                <h2 class="text-2xl md:text-3xl font-serif font-bold mb-6">Professional {subService.name} Service in New Jersey</h2>
+                <p class="text-muted-foreground text-lg leading-relaxed mb-10">{subService.longDesc}</p>
+
+                <h3 class="text-xl font-serif font-bold mb-5">What's Included</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
+                  {subService.bullets.map((bullet: string) => (
+                    <div class="flex items-start gap-3 p-4 bg-muted/30 rounded-xl">
+                      <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                      <span class="text-sm font-medium text-foreground leading-snug">{bullet}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div class="bg-primary/5 border border-primary/20 rounded-2xl p-6">
+                  <h3 class="font-serif font-bold text-lg mb-3">Serving All of New Jersey</h3>
+                  <p class="text-muted-foreground text-sm leading-relaxed">
+                    Garden State Locksmith provides {subService.name.toLowerCase()} throughout the entire state of New Jersey — including Camden County, Burlington County, Gloucester County, Mercer County, Ocean County, Monmouth County, Essex County, Hudson County, Bergen County, and Passaic County. Our mobile technicians are strategically positioned to reach you promptly. Whether you're in a major city or a rural township, we service your location.
+                  </p>
+                </div>
+
+                {subService.photos && subService.photos.length > 0 && (
+                  <div class="mt-10">
+                    <h3 class="text-xl font-serif font-bold mb-2">Real {subService.name} Work — Actual Jobs</h3>
+                    <p class="text-muted-foreground text-sm mb-5">These photos are from actual jobs completed by our technicians — no stock images.</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {subService.photos.map((src: string, i: number) => (
+                        <div class="relative aspect-square rounded-xl overflow-hidden bg-muted border border-border/40">
+                          <img src={src} alt={`${subService.name} — real job photo ${i + 1}`} loading="lazy" class="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div class="space-y-6">
+                <div class="rounded-2xl overflow-hidden" style="background: #0c1410;">
+                  <div class="p-6">
+                    <div class="text-2xl mb-2">{category.emoji}</div>
+                    <p class="text-accent font-bold uppercase tracking-widest text-xs mb-1">Free Quote</p>
+                    <h3 class="text-xl font-serif font-bold text-white mb-1">Book This Service</h3>
+                    <p class="text-white/50 text-sm mb-5">We'll call you back within minutes.</p>
+                    <BookingForm client:visible darkBg preselectedService={subService.slug} />
+                    <a href="tel:8565880580" class="flex items-center justify-center gap-2 w-full border border-white/20 text-white/70 text-sm font-semibold py-3 rounded-xl hover:bg-white/10 transition-colors mt-3">
+                      <Phone className="h-4 w-4" /> Or call (856) 588-0580
+                    </a>
+                  </div>
+                </div>
+
+                <div class="border border-border/50 rounded-2xl p-6">
+                  <h3 class="font-bold text-sm uppercase tracking-wide text-muted-foreground mb-4">Service Details</h3>
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-center py-2 border-b border-border/30">
+                      <span class="text-sm text-muted-foreground">Response Time</span>
+                      <span class="text-sm font-bold text-foreground">{subService.responseTime}</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-border/30">
+                      <span class="text-sm text-muted-foreground">Availability</span>
+                      <span class="text-sm font-bold text-foreground">7 AM – 10 PM</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2">
+                      <span class="text-sm text-muted-foreground">Service Area</span>
+                      <span class="text-sm font-bold text-foreground">All of NJ</span>
+                    </div>
+                  </div>
+                </div>
+
+                {relatedServices.length > 0 && (
+                  <div class="border border-border/50 rounded-2xl p-6">
+                    <h3 class="font-bold text-sm uppercase tracking-wide text-muted-foreground mb-4">More {category.name}</h3>
+                    <div class="space-y-2">
+                      {relatedServices.map((s: typeof category.subServices[number]) => (
+                        <a href={`/services/${category.slug}/${s.slug}`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group">
+                          <span class="text-sm font-medium text-foreground group-hover:text-primary">{s.name}</span>
+                          <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary" />
+                        </a>
+                      ))}
+                      <a href={`/services/${category.slug}`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-2">
+                        <span class="text-sm font-bold text-primary">View all {category.name}</span>
+                        <ArrowRight className="h-3 w-3 text-primary" />
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-16 bg-muted/30 border-t border-border/40">
+          <div class="container mx-auto px-4">
+            <div class="text-center mb-10">
+              <p class="text-accent font-bold uppercase tracking-widest text-xs mb-2">Complete Coverage</p>
+              <h2 class="text-2xl md:text-3xl font-serif font-bold mb-3">{subService.name} — All NJ Service Areas</h2>
+              <p class="text-muted-foreground max-w-2xl mx-auto">
+                Click your city below for a dedicated page with local response times, service details, and availability for {subService.name.toLowerCase()} in your area.
+              </p>
+            </div>
+
+            {counties.map((county) => {
+              const countyLocs = locations.filter((l) => l.county === county);
+              return (
+                <div class="mb-10">
+                  <div class="flex items-center gap-3 mb-4">
+                    <MapPin className="h-4 w-4 text-primary shrink-0" />
+                    <h3 class="font-bold text-sm uppercase tracking-widest text-muted-foreground">{county}</h3>
+                    <div class="flex-1 h-px bg-border/50" />
+                    <span class="text-xs text-muted-foreground font-semibold">{countyLocs.length} cities</span>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
+                    {countyLocs.map((loc) => (
+                      <a href={`/services/${category.slug}/${subService.slug}/${loc.slug}`} class="group flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border/50 bg-background hover:border-primary/40 hover:bg-primary/5 transition-all">
+                        <div class="h-1.5 w-1.5 rounded-full bg-primary/50 group-hover:bg-primary shrink-0 transition-colors" />
+                        <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-tight">{loc.name}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+
+            <div class="mt-8 text-center">
+              <a href="/locations" class="inline-flex items-center gap-2 border border-primary text-primary font-bold px-6 py-3 rounded-full hover:bg-primary/5 transition-colors text-sm">
+                <MapPin className="h-4 w-4" /> View All Location Pages
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <EmergencyCTA />
+      </BaseLayout>
+    );
+  })()
+) : (
+  (() => {
+    const service = Astro.props.service;
+    const location = Astro.props.location;
+    const content = generateServiceLocationContent(service, location);
+    const nearbyLocations = location.nearbyLocations
+      .map((slug: string) => locations.find((l) => l.slug === slug))
+      .filter((l: typeof locations[number] | undefined): l is typeof locations[number] => Boolean(l));
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: content.h1,
+      description: content.metaDescription,
+      provider: {
+        "@type": "LocalBusiness",
+        name: "Garden State Locksmith",
+        telephone: "+18565880580",
+        image: "https://gardenstatelocksmithnj.com/logo.png",
+        address: { "@type": "PostalAddress", addressRegion: location.state, addressLocality: location.name, postalCode: location.zipCodes[0] },
+      },
+      areaServed: { "@type": "City", name: location.name },
+    };
+
+    return (
+      <BaseLayout title={content.metaTitle} description={content.metaDescription} canonical={`/services/${service.slug}/${location.slug}`} schema={schema}>
+        <div class="relative overflow-hidden" style="background: #0c1410; min-height: 520px;">
+          <img src="/van-bg.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/75 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
+
+          <div class="relative container mx-auto px-4 py-20 lg:py-24">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <nav class="flex items-center gap-1 text-white/40 text-xs font-semibold uppercase tracking-wide mb-5 flex-wrap">
+                  <a href="/" class="hover:text-white transition-colors">Home</a>
+                  <ChevronRight className="h-3 w-3" />
+                  <a href="/services" class="hover:text-white transition-colors">Services</a>
+                  <ChevronRight className="h-3 w-3" />
+                  <a href={`/services/${service.slug}`} class="hover:text-white transition-colors">{service.name}</a>
+                  <ChevronRight className="h-3 w-3" />
+                  <span class="text-accent">{location.name}</span>
+                </nav>
+
+                <div class="inline-flex items-center rounded-full border border-accent/50 bg-accent/15 px-3 py-1 text-sm font-semibold text-accent mb-5">
+                  <span class="flex h-2 w-2 rounded-full bg-accent mr-2 animate-pulse" />
+                  Fast Response · Licensed NJ Technicians
+                </div>
+
+                <p class="text-accent font-bold uppercase tracking-[0.2em] text-xs mb-2">{service.name} · {location.county}</p>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-4 text-white">{content.h1}</h1>
+                <p class="text-lg text-white/70 mb-6 leading-relaxed max-w-lg">
+                  Professional, fast, and reliable {service.name.toLowerCase()} for the {location.name} community — performed by NJ-licensed technicians.
+                </p>
+
+                <div class="flex flex-wrap gap-3 mb-6">
+                  <a href="tel:8565880580" class="flex items-center gap-2 bg-accent text-white font-bold px-7 py-3.5 rounded-full hover:bg-accent/90 transition-colors text-base">
+                    <Phone className="h-5 w-5" /> (856) 588-0580
+                  </a>
+                  <div class="flex items-center gap-2 border border-white/20 text-white/70 font-semibold px-5 py-3 rounded-full text-sm">
+                    <Clock className="h-4 w-4 text-accent" /> Fast Local Dispatch
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4 text-sm font-semibold text-white/50">
+                  <span class="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-accent" /> Licensed & Insured</span>
+                  <span class="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-accent" /> {location.zipCodes.join(" · ")}</span>
+                </div>
+              </div>
+
+              <div class="lg:pl-6">
+                <div class="rounded-2xl border border-white/15 p-7" style="background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);">
+                  <p class="text-accent font-bold uppercase tracking-widest text-xs mb-1">Free Quote</p>
+                  <h2 class="text-2xl font-serif font-bold text-white mb-1">Schedule {service.name}</h2>
+                  <p class="text-white/50 text-sm mb-5">Serving {location.name} — we'll call back within minutes.</p>
+                  <BookingForm client:visible darkBg compact preselectedService={service.slug} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="py-16 bg-background">
+          <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              <div class="lg:col-span-2">
+                <div class="prose prose-lg dark:prose-invert max-w-none">
+                  {content.paragraphs.map((p: string) => (<p>{p}</p>))}
+
+                  <h2 class="font-serif text-3xl font-bold text-foreground mt-10">Why Choose Us in {location.name}?</h2>
+                  <ul class="space-y-3">
+                    <li class="flex items-start"><Clock className="h-6 w-6 text-primary mr-3 shrink-0" /><span><strong>Fast Local Dispatch:</strong> We dispatch the nearest available technician to {location.name}.</span></li>
+                    <li class="flex items-start"><ShieldCheck className="h-6 w-6 text-primary mr-3 shrink-0" /><span><strong>Licensed Professionals:</strong> Fully insured technicians performing damage-free work.</span></li>
+                    <li class="flex items-start"><MapPin className="h-6 w-6 text-primary mr-3 shrink-0" /><span><strong>Satisfaction Guaranteed:</strong> We stand behind every {service.name.toLowerCase()} job we complete.</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="lg:col-span-1">
+                <div class="bg-muted/50 p-6 rounded-xl border border-border sticky top-24">
+                  <h3 class="font-serif text-xl font-bold mb-4">Nearby Service Areas</h3>
+                  <ul class="space-y-3">
+                    {nearbyLocations.map((nl: typeof locations[number]) => (
+                      <li>
+                        <a href={`/services/${service.slug}/${nl.slug}`} class="flex items-center text-primary hover:text-accent transition-colors font-medium">
+                          <MapPin className="h-4 w-4 mr-2" />
+                          {service.name} in {nl.name}
+                        </a>
+                      </li>
+                    ))}
+                    <li class="pt-3 border-t border-border mt-3">
+                      <a href={`/locations/${location.slug}`} class="text-foreground font-semibold hover:underline">See all services in {location.name} &rarr;</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-16 bg-muted/30 border-t border-border">
+          <div class="container mx-auto px-4 max-w-3xl">
+            <div class="text-center mb-10">
+              <h2 class="text-3xl font-serif font-bold text-foreground mb-4">Questions about {service.name} in {location.name}?</h2>
+            </div>
+            <FAQAccordion faqs={content.faqs.map((f: { question: string; answer: string }) => ({ question: f.question, answer: f.answer }))} />
+          </div>
+        </section>
+
+        <EmergencyCTA title={`Need ${service.name} in ${location.name}?`} description={`We are your local experts. Call now for service in ${location.zipCodes[0]} and surrounding areas.`} />
+      </BaseLayout>
+    );
+  })()
+)}

@@ -1,0 +1,71 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroBanner from "@/components/shared/HeroBanner.astro";
+import { blogPosts } from "@/data/blogPosts";
+import { Calendar, Tag } from "lucide-react";
+
+const categoryList = ["All", "Residential Security", "Automotive", "Commercial Security", "Smart Security"];
+---
+
+<BaseLayout
+  title="Locksmith Blog | Security Tips for NJ Homeowners & Businesses | Garden State Locksmith"
+  description="Expert locksmith advice for New Jersey residents and businesses. Tips on home security, car key replacement, commercial security upgrades, and smart locks."
+  canonical="/blog"
+>
+  <HeroBanner
+    h1="Locksmith Tips & Security Guides"
+    subtitle="Expert advice from New Jersey's trusted locksmiths. Keep your home, business, and vehicle secure."
+    image="/high-security-lock-installation-nj.jpg"
+  />
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap gap-2 mb-10 justify-center">
+        {categoryList.map((cat) => (
+          <span class={`px-4 py-1.5 rounded-full text-sm font-semibold border ${cat === "All" ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border"}`}>
+            {cat}
+          </span>
+        ))}
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {blogPosts.map((post) => (
+          <a href={`/blog/${post.slug}`} class="group block">
+            <div class="rounded-xl border border-border/60 overflow-hidden h-full hover:shadow-lg transition-shadow bg-card">
+              <div class="relative h-48 overflow-hidden">
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  loading="lazy"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div class="absolute top-3 left-3">
+                  <span class="bg-primary/90 text-primary-foreground text-xs font-semibold px-2 py-1 rounded flex items-center gap-1">
+                    <Tag className="h-3 w-3" />{post.category}
+                  </span>
+                </div>
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
+                  <Calendar className="h-3.5 w-3.5" />
+                  {new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                </div>
+                <h2 class="font-serif font-bold text-lg text-foreground group-hover:text-primary transition-colors mb-2 leading-snug">{post.title}</h2>
+                <p class="text-sm text-muted-foreground line-clamp-3 mb-4">{post.excerpt}</p>
+                <span class="text-primary font-semibold text-sm group-hover:underline">Read Article &rarr;</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-muted/30 border-t border-border/50">
+    <div class="container mx-auto px-4 max-w-xl text-center">
+      <h2 class="text-2xl font-serif font-bold mb-3">Need a Locksmith Now?</h2>
+      <p class="text-muted-foreground mb-6">Garden State Locksmith serves all of New Jersey, 7 AM – 10 PM, 6 days a week.</p>
+      <a href="tel:8565880580" class="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground font-bold min-h-10 px-8 text-lg">Call (856) 588-0580</a>
+    </div>
+  </section>
+</BaseLayout>

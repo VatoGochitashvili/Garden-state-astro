@@ -1,0 +1,162 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroBanner from "@/components/shared/HeroBanner.astro";
+import EmergencyCTA from "@/components/shared/EmergencyCTA.astro";
+import { Phone, ShieldCheck, Clock, Star } from "lucide-react";
+import { optimizeImageSrc } from "@/lib/image";
+
+const DIFFERENTIATORS = [
+  { num: "01", icon: ShieldCheck, title: "NJ Licensed & Insured", desc: "Every Garden State technician is fully certified by the state of New Jersey, comprehensively insured, and rigorously background-checked — so you know exactly who is at your door.", image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" },
+  { num: "02", icon: Clock, title: "Rapid Response", desc: "Emergencies don't wait — and neither do we. When you call, we dispatch the nearest available technician immediately. Our average arrival time across New Jersey is same day.", image: "https://images.unsplash.com/photo-1549317336-206569e8475c?w=600&q=80" },
+  { num: "03", icon: Star, title: "Satisfaction Guaranteed", desc: "We stand behind every job we complete. If you're not fully satisfied with the work, we make it right — no questions asked. Your trust is our most important asset.", image: "https://images.unsplash.com/photo-1519974719765-e6559eac2575?w=600&q=80" },
+  { num: "04", icon: Star, title: "5-Star Service", desc: "Our reputation is built one job at a time. Homeowners, business owners, and drivers across New Jersey trust Garden State Locksmith for reliable, first-time-right results.", image: "https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?w=600&q=80" },
+];
+
+const MOBILE_HOURS = [
+  { day: "Monday – Thursday", hours: "7:00 AM – 10:00 PM" },
+  { day: "Friday", hours: "7:00 AM – 6:00 PM" },
+  { day: "Saturday", hours: "Closed" },
+  { day: "Sunday", hours: "7:00 AM – 10:00 PM" },
+];
+---
+
+<BaseLayout
+  title="About Garden State Locksmith | NJ's Trusted Local Locksmith"
+  description="15+ years serving New Jersey homeowners, businesses, and drivers. Fully licensed, insured, and locally owned. Learn our story, our team, and our commitment to you."
+  canonical="/about"
+  schema={{
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Garden State Locksmith",
+    description: "New Jersey's trusted local locksmith with 15+ years of experience.",
+    telephone: "+18565880580",
+    address: { "@type": "PostalAddress", addressRegion: "NJ", addressCountry: "US" },
+  }}
+>
+  <HeroBanner
+    h1="15+ Years of Trust & Expertise"
+    subtitle="From a single service van to New Jersey's most trusted locksmith team — we've helped thousands of families, businesses, and drivers stay safe and secure."
+    companyName="About Garden State Locksmith"
+  />
+
+  <section class="py-20 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
+        <div>
+          <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">Our Story</p>
+          <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6">Built on<br />15+ Years of Trust</h2>
+          <p class="text-muted-foreground text-lg mb-5 leading-relaxed">
+            What started as one locksmith with a van has grown into New Jersey's most trusted local security team. Over 15 years, we've helped countless families get back into their homes, businesses secure their properties, and drivers get back on the road.
+          </p>
+          <p class="text-muted-foreground text-lg mb-5 leading-relaxed">
+            We founded Garden State Locksmith because we saw too many national dispatch companies taking advantage of NJ residents with long wait times and untrained technicians. We knew our communities deserved better — honest service, rapid response, and a locksmith who actually knows New Jersey.
+          </p>
+          <p class="text-muted-foreground text-lg leading-relaxed">
+            From emergency lockouts to full commercial security systems, every job is handled by an NJ-certified technician who shows up on time, gives you an honest quote, and gets it right the first time.
+          </p>
+        </div>
+        <div class="bg-foreground rounded-3xl overflow-hidden relative h-80 lg:h-full min-h-80">
+          <img
+            src={optimizeImageSrc("https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80", 1200)}
+            alt="Garden State Locksmith team"
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover opacity-60"
+          />
+          <div class="absolute inset-0 flex flex-col justify-end p-8">
+            <div class="grid grid-cols-3 gap-4">
+              {[["15+", "Years Serving NJ"], ["5★", "Google Rating"], ["90+", "Cities Covered"]].map(([val, lab]) => (
+                <div class="text-center">
+                  <div class="text-3xl font-black text-accent mb-1">{val}</div>
+                  <div class="text-xs text-white/70 font-semibold uppercase tracking-wide leading-tight">{lab}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-muted/30">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-14">
+        <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">Why Choose Us</p>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold">The Garden State<br />Difference</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {DIFFERENTIATORS.map(({ num, icon: Icon, title, desc, image }) => (
+          <div class="relative rounded-2xl overflow-hidden bg-foreground group">
+            <img
+              src={optimizeImageSrc(image, 800)}
+              alt={`${title} - Garden State Locksmith`}
+              loading="lazy"
+              decoding="async"
+              class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500"
+            />
+            <div class="relative p-8">
+              <div class="flex items-start gap-5">
+                <div>
+                  <span class="text-accent font-black text-3xl leading-none block mb-4">{num}</span>
+                  <div class="h-10 w-10 bg-accent/20 rounded-xl flex items-center justify-center mb-4">
+                    <Icon className="h-5 w-5 text-accent" />
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-xl font-serif font-bold text-white mb-3">{title}</h3>
+                  <p class="text-white/65 leading-relaxed text-sm">{desc}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-14">
+        <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">Hours of Operation</p>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold">When We're Available</h2>
+      </div>
+      <div class="max-w-2xl mx-auto">
+        <div class="border border-border/50 rounded-2xl overflow-hidden">
+          <div class="bg-accent/10 px-6 py-4 border-b border-border/50">
+            <h3 class="font-serif font-bold text-lg text-foreground">🚐 Mobile Service</h3>
+            <p class="text-sm text-muted-foreground">We come to you — 6 days a week</p>
+          </div>
+          <div class="px-6 py-2">
+            {MOBILE_HOURS.map(({ day, hours }) => (
+              <div class="flex justify-between items-center py-3 border-b border-border/30 last:border-0">
+                <span class="font-medium text-sm text-foreground">{day}</span>
+                <span class="text-sm font-bold text-primary">{hours}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-10">
+        <a href="tel:8565880580" class="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold px-8 py-4 rounded-full text-lg hover:bg-primary/90 transition-colors shadow-lg">
+          <Phone className="h-5 w-5" />
+          Call Emergency Line: (856) 588-0580
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-muted/30">
+    <div class="container mx-auto px-4 text-center max-w-3xl">
+      <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">New Jersey Coverage</p>
+      <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6">Wherever You Are in NJ,<br />We Can Reach You</h2>
+      <p class="text-muted-foreground text-lg mb-8">
+        Our mobile technicians are strategically positioned throughout the state — covering Camden, Burlington, Gloucester, Mercer, Ocean, Monmouth, Essex, Hudson, Bergen, Passaic, and Union Counties.
+      </p>
+      <a href="/locations" class="inline-flex items-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors">
+        View All Service Areas →
+      </a>
+    </div>
+  </section>
+
+  <EmergencyCTA />
+</BaseLayout>

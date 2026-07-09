@@ -1,0 +1,290 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { BookingForm } from "@/components/shared/BookingForm";
+import EmergencyCTA from "@/components/shared/EmergencyCTA.astro";
+import LocationCard from "@/components/shared/LocationCard.astro";
+import { categories } from "@/data/categories";
+import { services } from "@/data/services";
+import { locations } from "@/data/locations";
+import { optimizeImageSrc } from "@/lib/image";
+import { Clock, ArrowRight, ChevronRight, Phone } from "lucide-react";
+
+export function getStaticPaths() {
+  const categoryPaths = categories.map((cat) => ({
+    params: { serviceSlug: cat.slug },
+    props: { kind: "category" as const, category: cat },
+  }));
+  const servicePaths = services.map((svc) => ({
+    params: { serviceSlug: svc.slug },
+    props: { kind: "service" as const, service: svc },
+  }));
+  return [...categoryPaths, ...servicePaths];
+}
+
+const { kind } = Astro.props;
+---
+
+{kind === "category" ? (
+  (() => {
+    const category = Astro.props.category;
+    const schemaData = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: `${category.name} in New Jersey`,
+      description: category.description,
+      provider: {
+        "@type": "LocalBusiness",
+        name: "Garden State Locksmith",
+        telephone: "+18565880580",
+        address: { "@type": "PostalAddress", addressRegion: "NJ", addressCountry: "US" },
+      },
+      areaServed: { "@type": "State", name: "New Jersey" },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: category.name,
+        itemListElement: category.subServices.map((s: typeof category.subServices[number]) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: s.name, description: s.shortDesc },
+        })),
+      },
+    };
+    const otherCats = [
+      { slug: "emergency", name: "Emergency", emoji: "🚨" },
+      { slug: "residential", name: "Residential", emoji: "🏠" },
+      { slug: "commercial", name: "Commercial", emoji: "🏢" },
+      { slug: "automotive", name: "Automotive", emoji: "🚗" },
+    ].filter((c) => c.slug !== category.slug);
+
+    return (
+      <BaseLayout
+        title={`${category.name} in New Jersey | Garden State Locksmith`}
+        description={category.description.slice(0, 155)}
+        canonical={`/services/${category.slug}`}
+        schema={schemaData}
+      >
+        <div class="relative min-h-[380px] flex items-end overflow-hidden bg-foreground">
+          <img
+            src={optimizeImageSrc(category.heroImage, 1600)}
+            alt={`${category.name} locksmith services in New Jersey`}
+            fetchpriority="high"
+            class="absolute inset-0 w-full h-full object-cover opacity-30"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-transparent" />
+          <div class="relative container mx-auto px-4 pb-14 pt-28">
+            <nav class="flex items-center gap-2 text-white/50 text-xs font-semibold uppercase tracking-wide mb-5">
+              <a href="/" class="hover:text-white transition-colors">Home</a>
+              <ChevronRight className="h-3 w-3" />
+              <a href="/services" class="hover:text-white transition-colors">Services</a>
+              <ChevronRight className="h-3 w-3" />
+              <span class="text-accent">{category.name}</span>
+            </nav>
+            <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">{category.emoji} {category.name}</p>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-black text-white leading-none mb-4">{category.headline}</h1>
+            <p class="text-white/70 text-lg max-w-2xl mb-8">{category.subheadline}</p>
+            <div class="flex flex-wrap gap-4">
+              <a href="tel:8565880580" class="flex items-center gap-2 bg-primary text-primary-foreground font-bold px-6 py-3 rounded-full hover:bg-primary/90 transition-colors">
+                <Phone className="h-4 w-4" /> (856) 588-0580
+              </a>
+              <a href="#services" class="flex items-center gap-2 border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/10 transition-colors">
+                View All {category.name} Services →
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <section class="py-12 bg-background border-b border-border/40">
+          <div class="container mx-auto px-4 max-w-4xl text-center">
+            <p class="text-lg text-muted-foreground leading-relaxed">{category.description}</p>
+          </div>
+        </section>
+
+        <section id="services" class="py-16 bg-muted/30">
+          <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+              <p class="text-accent font-bold uppercase tracking-widest text-xs mb-2">All {category.name} Services</p>
+              <h2 class="text-3xl md:text-4xl font-serif font-bold text-foreground">{category.subServices.length} Services Available</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {category.subServices.map((sub: typeof category.subServices[number]) => (
+                <a href={`/services/${category.slug}/${sub.slug}`}>
+                  <div class="group relative bg-foreground rounded-2xl overflow-hidden cursor-pointer h-72 hover:scale-[1.02] transition-transform duration-300">
+                    <img
+                      src={optimizeImageSrc(sub.image, 800)}
+                      alt={`${sub.name} service in New Jersey`}
+                      loading="lazy"
+                      decoding="async"
+                      class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-500"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                      <h3 class="text-xl font-serif font-bold text-white mb-2">{sub.name}</h3>
+                      <p class="text-white/60 text-sm mb-4 line-clamp-2">{sub.shortDesc}</p>
+                      <div class="flex items-center justify-between">
+                        <span class="flex items-center gap-1 text-white/50 text-xs font-semibold"><Clock className="h-3 w-3" />{sub.responseTime}</span>
+                        <span class="flex items-center gap-1 text-accent text-xs font-bold group-hover:gap-2 transition-all">
+                          Learn More <ArrowRight className="h-3 w-3" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section class="relative py-16 overflow-hidden" style="background: #0c1410;">
+          <img src="/van-bg.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80 pointer-events-none" />
+          <div class="relative z-10 container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <p class="text-accent font-bold uppercase tracking-widest text-xs mb-2">Free Quote</p>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Schedule {category.name} Service</h2>
+                <p class="text-white/60 text-lg leading-relaxed mb-6">
+                  One of our NJ-licensed {category.name.toLowerCase()} technicians will call you back within minutes — no obligation.
+                </p>
+                <div class="flex flex-wrap gap-4 text-sm text-white/50 font-semibold">
+                  <span>✓ fast local dispatch</span>
+                  <span>✓ Satisfaction guaranteed</span>
+                  <span>✓ Licensed & bonded</span>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-white/10 p-7" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(12px);">
+                <BookingForm client:visible darkBg />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-16 bg-background">
+          <div class="container mx-auto px-4 max-w-5xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+              <div>
+                <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">Why Garden State?</p>
+                <h2 class="text-3xl font-serif font-bold mb-6">NJ's Trusted {category.name} Team</h2>
+                <p class="text-muted-foreground text-lg mb-8 leading-relaxed">
+                  Every Garden State Locksmith technician is NJ state licensed, background-checked, and fully insured. We serve all of New Jersey with a fast local dispatch and satisfaction guaranteed on every job.
+                </p>
+                <div class="grid grid-cols-2 gap-4">
+                  {[["15+", "Years in NJ"], ["5★", "Google Rated"], ["Same-Day", "Service"], ["NJ", "Licensed & Insured"]].map(([v, l]) => (
+                    <div class="bg-primary/5 rounded-xl p-4 text-center">
+                      <div class="text-2xl font-black text-primary mb-1">{v}</div>
+                      <div class="text-xs text-muted-foreground font-semibold uppercase tracking-wide">{l}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div class="bg-foreground rounded-2xl p-8 text-center">
+                <div class="text-5xl mb-4">{category.emoji}</div>
+                <h3 class="text-2xl font-serif font-bold text-white mb-3">Need {category.name} Now?</h3>
+                <p class="text-white/60 mb-6">Our dispatch team is standing by to send the nearest available technician.</p>
+                <a href="tel:8565880580" class="flex items-center justify-center gap-2 w-full bg-accent text-accent-foreground font-bold py-4 rounded-xl hover:bg-accent/90 transition-colors text-lg">
+                  <Phone className="h-5 w-5" /> (856) 588-0580
+                </a>
+                <p class="text-white/40 text-xs mt-3">Available 7 AM – 10 PM across New Jersey</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-12 bg-muted/30 border-t border-border/40">
+          <div class="container mx-auto px-4">
+            <p class="text-center text-sm font-bold uppercase tracking-widest text-muted-foreground mb-6">Other Locksmith Services</p>
+            <div class="flex flex-wrap justify-center gap-3">
+              {otherCats.map((c) => (
+                <a href={`/services/${c.slug}`} class="flex items-center gap-2 px-5 py-2.5 bg-background border border-border rounded-full text-sm font-bold hover:border-primary hover:text-primary transition-colors">
+                  {c.emoji} {c.name} Locksmith
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <EmergencyCTA />
+      </BaseLayout>
+    );
+  })()
+) : (
+  (() => {
+    const service = Astro.props.service;
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: service.name,
+      description: service.shortDesc,
+      provider: {
+        "@type": "LocalBusiness",
+        name: "Garden State Locksmith",
+        address: { "@type": "PostalAddress", addressRegion: "NJ", addressLocality: "Camden County" },
+        telephone: "+18565880580",
+      },
+      areaServed: { "@type": "County", name: "Camden County" },
+    };
+    const topLocations = locations.slice(0, 8);
+
+    return (
+      <BaseLayout
+        title={`${service.name} in Camden County, NJ | Garden State Locksmith`}
+        description={`Professional ${service.name.toLowerCase()} in Camden County. ${service.shortDesc} Fast response, licensed technicians. Call (856) 588-0580.`}
+        canonical={`/services/${service.slug}`}
+        schema={schema}
+      >
+        <div class="relative overflow-hidden text-white py-16 lg:py-24" style="background: #0c1410;">
+          <div class="absolute inset-0 pointer-events-none">
+            <img src="/van-bg.jpg" alt="" aria-hidden="true" fetchpriority="high" class="w-full h-full object-cover opacity-40" />
+            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/75" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+          </div>
+          <div class="absolute bottom-0 left-0 w-96 h-48 bg-primary/20 blur-3xl pointer-events-none" />
+          <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-3xl">
+              <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight mb-6 text-white drop-shadow-lg">{service.name} Services</h1>
+              <p class="text-lg md:text-xl text-white/80 mb-8 max-w-2xl font-medium leading-relaxed">
+                {service.shortDesc} Available 7 AM – 10 PM throughout Camden County, NJ.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <a href="tel:8565880580" class="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90 font-bold text-lg px-8 py-6 h-auto rounded-md transition-colors">
+                  <Phone className="h-6 w-6" /> (856) 588-0580
+                </a>
+                <a href="/contact" class="inline-flex items-center justify-center gap-2 border border-white/30 text-white hover:bg-white/10 font-bold text-lg px-8 py-6 h-auto rounded-md transition-colors">Request a Quote</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="py-16 bg-background">
+          <div class="container mx-auto px-4 max-w-4xl">
+            <div class="prose prose-lg dark:prose-invert max-w-none">
+              <h2 class="font-serif text-3xl font-bold text-foreground">Expert {service.name}</h2>
+              <p>{service.longDesc}</p>
+              <p>
+                At Garden State Locksmith, we pride ourselves on delivering top-tier {service.name.toLowerCase()} to both residential and commercial clients across Camden County. Our skilled technicians are equipped with the latest tools to handle the job efficiently and correctly.
+              </p>
+              <h3 class="font-serif text-2xl font-bold text-foreground mt-8">Service Details</h3>
+              <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 list-none pl-0">
+                <li class="bg-muted/50 p-4 rounded-lg flex items-center gap-3">
+                  <span class="font-bold text-primary">Response Time:</span> {service.responseTime}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-16 bg-muted/30 border-t border-border">
+          <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-serif font-bold text-center mb-10 text-foreground">{service.name} Service Areas</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {topLocations.map((location) => (
+                <LocationCard location={location} serviceSlug={service.slug} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <EmergencyCTA />
+      </BaseLayout>
+    );
+  })()
+)}

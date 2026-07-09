@@ -1,0 +1,409 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { BookingForm } from "@/components/shared/BookingForm";
+import { categories } from "@/data/categories";
+import { locations } from "@/data/locations";
+import { Phone, Clock, CheckCircle2, ChevronRight, ArrowRight, MapPin, ShieldCheck, Star, Home as HomeIcon, Building2 } from "lucide-react";
+import {
+  hashStr,
+  makeH1,
+  makeTitle,
+  makeMeta,
+  makeIntroP1,
+  makeIntroP2,
+  makeWhyUs,
+  makeFAQs,
+  whyHeading,
+  aboutHeading,
+  nearbyHeading,
+  noteFor,
+} from "@/lib/subServiceLocationContent";
+
+export function getStaticPaths() {
+  const paths: Array<{ params: { category: string; sub: string; location: string } }> = [];
+  for (const cat of categories) {
+    for (const sub of cat.subServices) {
+      for (const loc of locations) {
+        paths.push({ params: { category: cat.slug, sub: sub.slug, location: loc.slug } });
+      }
+    }
+  }
+  return paths;
+}
+
+const { category: catSlug, sub: subSlug, location: locSlug } = Astro.params;
+const category = categories.find((c) => c.slug === catSlug)!;
+const subService = category.subServices.find((s) => s.slug === subSlug)!;
+const location = locations.find((l) => l.slug === locSlug)!;
+
+const seed = hashStr(`${location.slug}|${subService.slug}|${category.slug}`);
+
+const heroBg = subService.photos && subService.photos.length > 0
+  ? subService.photos[seed % subService.photos.length]
+  : "/van-bg.jpg";
+
+const nearbyLocations = location.nearbyLocations
+  .map((s) => locations.find((l) => l.slug === s))
+  .filter((l): l is NonNullable<typeof l> => Boolean(l));
+
+const relatedServices = category.subServices.filter((s) => s.slug !== subService.slug).slice(0, 4);
+const otherCategories = categories.filter((c) => c.slug !== category.slug);
+
+const h1 = makeH1(subService, location, seed);
+const metaTitle = makeTitle(subService, location, seed);
+const metaDescription = makeMeta(subService, location, seed);
+const introP1 = makeIntroP1(subService, category, location, seed);
+const introP2 = makeIntroP2(subService, location, seed);
+const whyUs = makeWhyUs(category, location, seed);
+const faqs = makeFAQs(subService, category, location, seed);
+const whyTitle = whyHeading(location, seed);
+const aboutTitle = aboutHeading(location, seed);
+const nearbyTitle = nearbyHeading(location, subService, seed);
+
+const nearbyAnchorVariants = [
+  (n: typeof location) => n.name,
+  (n: typeof location) => `${n.name}, ${n.county}`,
+  (n: typeof location) => `${n.name} (${n.zipCodes[0]})`,
+];
+
+const absoluteHeroImage = heroBg.startsWith("http") ? heroBg : `https://gardenstatelocksmithnj.com${heroBg}`;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: `${subService.name} in ${location.name}, NJ`,
+  description: metaDescription,
+  image: absoluteHeroImage,
+  serviceType: subService.name,
+  provider: {
+    "@type": "LocalBusiness",
+    name: "Garden State Locksmith",
+    telephone: "+18565880580",
+    image: absoluteHeroImage,
+    address: { "@type": "PostalAddress", addressLocality: location.name, addressRegion: "NJ", postalCode: location.zipCodes[0], addressCountry: "US" },
+    openingHours: "Mo-Su 00:00-23:59",
+  },
+  areaServed: { "@type": "City", name: location.name, containedInPlace: { "@type": "AdministrativeArea", name: location.county } },
+  offers: { "@type": "Offer", description: subService.shortDesc },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+---
+
+<BaseLayout title={metaTitle} description={metaDescription} canonical={`/services/${category.slug}/${subService.slug}/${location.slug}`} imageUrl={heroBg} schema={[schema, faqSchema]}>
+  <!-- Hero -->
+  <div class="relative min-h-[400px] flex items-end overflow-hidden" style="background: #0c1410;">
+    <img
+      src={heroBg}
+      alt={`${subService.name} in ${location.name}, NJ — Garden State Locksmith`}
+      width="1600"
+      height="900"
+      fetchpriority="high"
+      decoding="async"
+      class="absolute inset-0 w-full h-full object-cover opacity-25"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0c1410] via-[#0c1410]/80 to-[#0c1410]/40" />
+    <div class="relative container mx-auto px-4 pb-14 pt-32">
+      <nav class="flex items-center gap-1.5 text-white/50 text-xs font-semibold uppercase tracking-wide mb-5 flex-wrap">
+        <a href="/" class="hover:text-white transition-colors">Home</a>
+        <ChevronRight className="h-3 w-3" />
+        <a href="/services" class="hover:text-white transition-colors">Services</a>
+        <ChevronRight className="h-3 w-3" />
+        <a href={`/services/${category.slug}`} class="hover:text-white transition-colors">{category.name}</a>
+        <ChevronRight className="h-3 w-3" />
+        <a href={`/services/${category.slug}/${subService.slug}`} class="hover:text-white transition-colors">{subService.name}</a>
+        <ChevronRight className="h-3 w-3" />
+        <span class="text-accent">{location.name}</span>
+      </nav>
+
+      <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">{category.emoji} {category.name} · {location.county}</p>
+      <h1 class="text-4xl md:text-5xl font-serif font-black text-white leading-tight mb-4">
+        {h1.line1}<br />
+        <span class="text-accent">{h1.line2}</span>
+      </h1>
+      <p class="text-white/70 text-lg max-w-2xl mb-8">{subService.shortDesc}</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="tel:8565880580" class="flex items-center gap-2 bg-accent text-white font-bold px-7 py-3.5 rounded-full hover:bg-accent/90 transition-colors text-base">
+          <Phone className="h-5 w-5" /> Call (856) 588-0580
+        </a>
+        <div class="flex items-center gap-2 bg-white/10 border border-white/20 text-white font-semibold px-5 py-3 rounded-full text-sm">
+          <Clock className="h-4 w-4 text-accent" /> Fast Local Dispatch in {location.name}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="bg-primary text-primary-foreground">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 divide-x divide-primary-foreground/20">
+        <div class="flex items-center gap-3 py-5 px-4">
+          <Clock className="h-5 w-5 text-accent shrink-0" />
+          <div>
+            <p class="text-xs text-primary-foreground/60 font-semibold uppercase tracking-wide">Response Time</p>
+            <p class="font-bold text-sm">{subService.responseTime}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 py-5 px-4">
+          <MapPin className="h-5 w-5 text-accent shrink-0" />
+          <div>
+            <p class="text-xs text-primary-foreground/60 font-semibold uppercase tracking-wide">Serving</p>
+            <p class="font-bold text-sm">{location.name}, {location.zipCodes.join(" · ")}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 py-5 px-4">
+          <ShieldCheck className="h-5 w-5 text-accent shrink-0" />
+          <div>
+            <p class="text-xs text-primary-foreground/60 font-semibold uppercase tracking-wide">Technicians</p>
+            <p class="font-bold text-sm">NJ Licensed & Insured</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2 space-y-12">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-serif font-bold mb-6">{h1.line1} {h1.line2}</h2>
+            <p class="text-muted-foreground text-lg leading-relaxed mb-5">{introP1}</p>
+            <p class="text-muted-foreground text-lg leading-relaxed">{introP2}</p>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-serif font-bold mb-5">What's Included on Every {location.name} {subService.name} Job</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {subService.bullets.map((bullet) => (
+                <div class="flex items-start gap-3 p-4 bg-muted/30 rounded-xl border border-border/40">
+                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                  <span class="text-sm font-medium text-foreground leading-snug">{bullet}</span>
+                </div>
+              ))}
+              {[
+                `Upfront quote — you approve before we touch a ${location.name} lock`,
+                `7 AM – 10 PM ${location.name} availability including holidays`,
+              ].map((b) => (
+                <div class="flex items-start gap-3 p-4 bg-muted/30 rounded-xl border border-border/40">
+                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                  <span class="text-sm font-medium text-foreground leading-snug">{b}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-serif font-bold mb-5">{whyTitle}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {whyUs.map((point) => (
+                <div class="p-5 rounded-2xl border border-border/40 bg-background">
+                  <div class="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                    {point.icon === "clock" && <Clock className="h-5 w-5 text-primary" />}
+                    {point.icon === "shield" && <ShieldCheck className="h-5 w-5 text-primary" />}
+                    {point.icon === "star" && <Star className="h-5 w-5 text-primary" />}
+                  </div>
+                  <h4 class="font-bold text-foreground mb-1">{point.title}</h4>
+                  <p class="text-muted-foreground text-sm leading-relaxed">{point.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="bg-primary/5 border border-primary/20 rounded-2xl p-6 space-y-4">
+            <h3 class="font-serif font-bold text-lg">{aboutTitle}</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed">
+              {location.name} is {location.profile.vibe}. We cover every street and zip code — {location.zipCodes.join(", ")} — and we know the local landmarks: {location.profile.landmarks.slice(0, 3).join(", ")}.
+            </p>
+
+            {location.profile.neighborhoods.length > 0 && (
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2 flex items-center gap-2">
+                  <HomeIcon className="h-3.5 w-3.5" /> {location.name} Neighborhoods We Serve
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  {location.profile.neighborhoods.map((n) => (
+                    <span class="bg-background border border-border/50 text-foreground/80 text-xs font-medium px-3 py-1 rounded-full">{n}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2 flex items-center gap-2">
+                <Building2 className="h-3.5 w-3.5" /> {location.name} Housing & Properties
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                {location.profile.housingStock.map((h) => (
+                  <span class="bg-background border border-border/50 text-foreground/80 text-xs font-medium px-3 py-1 rounded-full">{h}</span>
+                ))}
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-primary/10">
+              <p class="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2">Why {subService.name} in {location.name} Is Different</p>
+              <p class="text-muted-foreground text-sm leading-relaxed">
+                {(() => { const n = noteFor(category, location); return n.charAt(0).toUpperCase() + n.slice(1); })()}. That's why our {location.name} trucks are stocked specifically for this town — not for a generic NJ suburb.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-2">
+              {location.zipCodes.map((zip) => (
+                <span class="bg-primary/10 border border-primary/20 text-primary text-xs font-bold px-3 py-1 rounded-full">{zip}</span>
+              ))}
+              <span class="bg-muted text-muted-foreground text-xs font-semibold px-3 py-1 rounded-full">{location.county}</span>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-serif font-bold mb-5">Common {location.name} {subService.name} Scenarios</h3>
+            <p class="text-muted-foreground text-sm mb-5">
+              Here are the kinds of {location.name}-specific calls we handle most often. If yours sounds like one of these, you're in the right place.
+            </p>
+            <div class="space-y-3">
+              {location.profile.commonScenarios.map((scenario, i) => (
+                <div class="flex items-start gap-3 p-4 bg-muted/20 rounded-xl border border-border/40">
+                  <div class="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <span class="text-xs font-bold text-primary">{i + 1}</span>
+                  </div>
+                  <p class="text-sm text-foreground leading-relaxed">{scenario.charAt(0).toUpperCase() + scenario.slice(1)}.</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {subService.photos && subService.photos.length > 0 && (
+            <div>
+              <h3 class="text-xl font-serif font-bold mb-2">Real {subService.name} Work — Actual Jobs</h3>
+              <p class="text-muted-foreground text-sm mb-5">
+                These photos are from actual {subService.name.toLowerCase()} jobs completed by our technicians. No stock photos — real work, real results.
+              </p>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {subService.photos.map((src, i) => (
+                  <div class="relative aspect-square rounded-xl overflow-hidden bg-muted border border-border/40">
+                    <img
+                      src={src}
+                      alt={`${subService.name} in ${location.name}, NJ — real job photo ${i + 1} by Garden State Locksmith`}
+                      loading="lazy"
+                      class="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {nearbyLocations.length > 0 && (
+            <div>
+              <h3 class="text-xl font-serif font-bold mb-4">{nearbyTitle}</h3>
+              <p class="text-muted-foreground text-sm mb-5">
+                We also handle {subService.name.toLowerCase()} in the towns immediately around {location.name} — usually within the same dispatch window.
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {nearbyLocations.map((nl, i) => {
+                  const anchorFn = nearbyAnchorVariants[(seed + i) % nearbyAnchorVariants.length];
+                  return (
+                    <a href={`/services/${category.slug}/${subService.slug}/${nl.slug}`} class="flex items-center justify-between p-4 rounded-xl border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all group">
+                      <div class="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-primary shrink-0" />
+                        <div>
+                          <p class="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{anchorFn(nl)}</p>
+                          <p class="text-xs text-muted-foreground">{subService.name}</p>
+                        </div>
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <div>
+            <h3 class="text-xl font-serif font-bold mb-5">{subService.name} in {location.name} — Questions Locals Ask</h3>
+            <div class="space-y-4">
+              {faqs.map((faq) => (
+                <details class="group border border-border/60 rounded-xl overflow-hidden">
+                  <summary class="flex items-center justify-between px-6 py-4 cursor-pointer font-serif font-bold text-foreground text-sm md:text-base list-none hover:bg-muted/30 transition-colors [&::-webkit-details-marker]:hidden">
+                    {faq.q}
+                    <ChevronRight className="h-4 w-4 text-primary group-open:rotate-90 transition-transform shrink-0 ml-4" />
+                  </summary>
+                  <div class="px-6 py-4 border-t border-border/40 text-muted-foreground text-sm leading-relaxed bg-background">{faq.a}</div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="rounded-2xl overflow-hidden" style="background: #0c1410;">
+            <div class="p-6">
+              <p class="text-accent font-bold uppercase tracking-widest text-xs mb-1">Free Quote</p>
+              <h3 class="text-xl font-serif font-bold text-white mb-1">{subService.name} in {location.name}</h3>
+              <p class="text-white/50 text-sm mb-5">We'll call back within minutes.</p>
+              <BookingForm client:visible darkBg preselectedService={subService.slug} />
+              <a href="tel:8565880580" class="flex items-center justify-center gap-2 w-full border border-white/20 text-white/70 text-sm font-semibold py-3 rounded-xl hover:bg-white/10 transition-colors mt-3">
+                <Phone className="h-4 w-4" /> Or call (856) 588-0580
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-border/50 rounded-2xl p-6">
+            <h3 class="font-bold text-sm uppercase tracking-wide text-muted-foreground mb-4">Service Details</h3>
+            <div class="space-y-3">
+              {[
+                ["Response Time", subService.responseTime],
+                ["Availability", "7 AM – 10 PM Including Holidays"],
+                ["Location", `${location.name}, NJ`],
+                ["Coverage", location.county],
+                ["Zip Codes", location.zipCodes.join(", ")],
+              ].map(([label, val]) => (
+                <div class="flex justify-between items-center py-2 border-b border-border/30 last:border-0">
+                  <span class="text-sm text-muted-foreground">{label}</span>
+                  <span class="text-sm font-bold text-foreground text-right">{val}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {relatedServices.length > 0 && (
+            <div class="border border-border/50 rounded-2xl p-6">
+              <h3 class="font-bold text-sm uppercase tracking-wide text-muted-foreground mb-4">More {category.name} in {location.name}</h3>
+              <div class="space-y-2">
+                {relatedServices.map((s) => (
+                  <a href={`/services/${category.slug}/${s.slug}/${location.slug}`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group">
+                    <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug">{s.name} in {location.name}</span>
+                    <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary shrink-0 ml-2" />
+                  </a>
+                ))}
+                <a href={`/services/${category.slug}`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-1">
+                  <span class="text-sm font-bold text-primary">All {category.name} →</span>
+                </a>
+              </div>
+            </div>
+          )}
+
+          <div class="border border-border/50 rounded-2xl p-6">
+            <h3 class="font-bold text-sm uppercase tracking-wide text-muted-foreground mb-4">Other Locksmith Services in {location.name}</h3>
+            <div class="space-y-2">
+              {otherCategories.map((cat) => (
+                <a href={`/locations/${location.slug}`} class="flex items-center gap-2 p-3 rounded-xl hover:bg-muted/50 transition-colors group">
+                  <span class="text-base">{cat.emoji}</span>
+                  <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{cat.name} in {location.name}</span>
+                </a>
+              ))}
+              <a href={`/locations/${location.slug}`} class="flex items-center gap-2 p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-1">
+                <span class="text-sm font-bold text-primary">All Services in {location.name} →</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

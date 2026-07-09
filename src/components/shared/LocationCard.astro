@@ -1,0 +1,29 @@
+---
+import { MapPin, ArrowRight } from "lucide-react";
+import type { Location } from "@/data/locations";
+
+interface Props {
+  location: Location;
+  serviceSlug?: string;
+}
+
+const { location, serviceSlug } = Astro.props;
+const href = serviceSlug ? `/services/${serviceSlug}/${location.slug}` : `/locations/${location.slug}`;
+---
+
+<div class="flex flex-col h-full rounded-xl border bg-card text-card-foreground shadow hover:border-primary/50 transition-colors duration-300 group">
+  <div class="flex flex-col space-y-1.5 p-6 pb-2">
+    <div class="flex items-center gap-2">
+      <MapPin className="h-5 w-5 text-accent" />
+      <h3 class="text-lg font-serif font-semibold leading-none tracking-tight">{location.name}</h3>
+    </div>
+  </div>
+  <div class="flex-1 p-6 pt-0 pb-2">
+    <p class="text-sm text-muted-foreground">{location.county}, {location.state} {location.zipCodes[0]}</p>
+  </div>
+  <div class="flex items-center p-6 pt-0">
+    <a href={href} class="text-primary text-sm font-semibold flex items-center hover:text-accent transition-colors">
+      View Services <ArrowRight className="ml-1 h-3 w-3" />
+    </a>
+  </div>
+</div>

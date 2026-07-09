@@ -1,0 +1,71 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import LocationCard from "@/components/shared/LocationCard.astro";
+import { ServiceAreaMap } from "@/components/shared/ServiceAreaMap";
+import { locations } from "@/data/locations";
+import { PRIORITY_SERVICE_LOCATION_LINKS } from "@/data/indexingPriority";
+import { MapPin } from "lucide-react";
+---
+
+<BaseLayout
+  title="Locksmith Service Areas in NJ | Garden State Locksmith"
+  description="Garden State Locksmith serves 90+ cities across New Jersey within a 40-mile radius of Camden. Find your city and call for 7 AM – 10 PM locksmith service."
+  canonical="/locations"
+>
+  <div class="relative overflow-hidden text-white py-20" style="background: #0c1410;">
+    <img src="/van-bg.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80 pointer-events-none" />
+    <div class="container mx-auto px-4 relative z-10 text-center max-w-3xl">
+      <p class="text-accent font-bold uppercase tracking-widest text-xs mb-3">Service Coverage</p>
+      <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4 drop-shadow-lg">We Serve All of New Jersey</h1>
+      <p class="text-white/70 text-lg">
+        {locations.length}+ cities and towns within a 40-mile radius of Camden, NJ — including Camden, Burlington, Gloucester, Mercer, and Salem counties.
+      </p>
+    </div>
+  </div>
+
+  <section class="py-14 bg-muted/30 border-b border-border/40" style="isolation: isolate;">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center gap-3 mb-6">
+          <MapPin className="h-6 w-6 text-primary" />
+          <div>
+            <h2 class="text-2xl font-serif font-bold text-foreground">Service Area Map</h2>
+            <p class="text-muted-foreground text-sm">Hover over any dot to see the city name. Gold dot = Camden HQ.</p>
+          </div>
+        </div>
+        <ServiceAreaMap client:visible />
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl font-serif font-bold">All Service Locations</h2>
+        <span class="text-sm text-muted-foreground font-semibold">{locations.length} cities</span>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        {locations.map((location) => (
+          <LocationCard location={location} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 bg-muted/20 border-t border-border/40">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-xl font-serif font-bold text-foreground">Popular City + Service Links</h2>
+        <a href="/sitemap" class="text-sm font-semibold text-primary hover:underline">Full Sitemap</a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {PRIORITY_SERVICE_LOCATION_LINKS.slice(0, 9).map((item) => (
+          <a href={item.href} class="rounded-lg border border-border px-4 py-3 text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

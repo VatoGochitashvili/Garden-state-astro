@@ -1,0 +1,85 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { categories } from "@/data/categories";
+import { locations } from "@/data/locations";
+import { blogPosts } from "@/data/blogPosts";
+import { PRIORITY_SERVICE_LOCATION_LINKS } from "@/data/indexingPriority";
+---
+
+<BaseLayout
+  title="HTML Sitemap | Garden State Locksmith"
+  description="Browse all major Garden State Locksmith pages, services, locations, and priority city-service pages."
+  canonical="/sitemap"
+>
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <h1 class="text-4xl font-serif font-bold mb-4">HTML Sitemap</h1>
+      <p class="text-muted-foreground mb-10">
+        This page links to our core pages so visitors and search engines can discover important content quickly.
+      </p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="rounded-xl border border-border p-6">
+          <h2 class="text-xl font-serif font-bold mb-4">Core Pages</h2>
+          <ul class="space-y-2 text-sm">
+            {[
+              ["/", "Home"],
+              ["/services", "Services"],
+              ["/locations", "Locations"],
+              ["/about", "About"],
+              ["/contact", "Contact"],
+              ["/blog", "Blog"],
+              ["/faq", "FAQ"],
+            ].map(([href, label]) => (
+              <li><a href={href} class="text-primary hover:underline">{label}</a></li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="rounded-xl border border-border p-6">
+          <h2 class="text-xl font-serif font-bold mb-4">Service Hubs</h2>
+          <ul class="space-y-2 text-sm">
+            {categories.map((cat) => (
+              <li><a href={`/services/${cat.slug}`} class="text-primary hover:underline">{cat.name}</a></li>
+            ))}
+          </ul>
+          <h3 class="text-sm font-bold uppercase tracking-wide text-muted-foreground mt-6 mb-2">Sub-services</h3>
+          <ul class="space-y-2 text-sm max-h-72 overflow-auto pr-1">
+            {categories.flatMap((cat) =>
+              cat.subServices.map((sub) => (
+                <li><a href={`/services/${cat.slug}/${sub.slug}`} class="text-primary hover:underline">{sub.name}</a></li>
+              )),
+            )}
+          </ul>
+        </div>
+
+        <div class="rounded-xl border border-border p-6">
+          <h2 class="text-xl font-serif font-bold mb-4">Priority City + Service Pages</h2>
+          <ul class="space-y-2 text-sm">
+            {PRIORITY_SERVICE_LOCATION_LINKS.map((item) => (
+              <li><a href={item.href} class="text-primary hover:underline">{item.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 rounded-xl border border-border p-6">
+        <h2 class="text-xl font-serif font-bold mb-4">Locations</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-2 gap-x-4 text-sm">
+          {locations.map((loc) => (
+            <a href={`/locations/${loc.slug}`} class="text-primary hover:underline">{loc.name}</a>
+          ))}
+        </div>
+      </div>
+
+      <div class="mt-8 rounded-xl border border-border p-6">
+        <h2 class="text-xl font-serif font-bold mb-4">Blog Articles</h2>
+        <ul class="space-y-2 text-sm">
+          {blogPosts.map((post) => (
+            <li><a href={`/blog/${post.slug}`} class="text-primary hover:underline">{post.title}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

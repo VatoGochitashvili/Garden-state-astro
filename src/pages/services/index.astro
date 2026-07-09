@@ -1,0 +1,136 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroBanner from "@/components/shared/HeroBanner.astro";
+import EmergencyCTA from "@/components/shared/EmergencyCTA.astro";
+import { categories } from "@/data/categories";
+import { PRIORITY_SERVICE_LOCATION_LINKS } from "@/data/indexingPriority";
+import { optimizeImageSrc } from "@/lib/image";
+import { Clock, ArrowRight } from "lucide-react";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Garden State Locksmith Services",
+  itemListElement: categories.flatMap((cat, ci) =>
+    cat.subServices.map((s, si) => ({
+      "@type": "ListItem",
+      position: ci * 10 + si + 1,
+      name: s.name,
+      url: `https://gardenstatelocksmithnj.com/services/${cat.slug}/${s.slug}`,
+    })),
+  ),
+};
+---
+
+<BaseLayout
+  title="Locksmith Services in New Jersey | Garden State Locksmith"
+  description="Emergency, residential, commercial, and automotive locksmith services across New Jersey. Licensed NJ locksmiths with 7 AM – 10 PM availability. Call (856) 588-0580."
+  canonical="/services"
+  schema={schema}
+>
+  <HeroBanner
+    h1="Professional NJ Locksmith Services"
+    subtitle="Emergency lockouts, residential security upgrades, commercial access control, and automotive key solutions — trusted across all of New Jersey."
+    companyName="Our Services"
+  />
+
+  <section class="py-16 bg-background">
+    <div class="container mx-auto px-4">
+      <!-- Jump nav -->
+      <div class="flex flex-wrap justify-center gap-2 mb-14">
+        {categories.map((cat) => (
+          <a
+            href={`#${cat.slug}`}
+            class="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold border border-border bg-background text-foreground/70 hover:border-primary/50 hover:text-primary transition-all duration-200"
+          >
+            <span>{cat.emoji}</span>
+            {cat.name}
+            <span class="text-xs px-1.5 py-0.5 rounded-full font-black bg-muted text-muted-foreground">{cat.subServices.length}</span>
+          </a>
+        ))}
+      </div>
+
+      {categories.map((activeCategory) => (
+        <div id={activeCategory.slug} class="mb-16 scroll-mt-28">
+          <div class="text-center max-w-2xl mx-auto mb-10">
+            <h2 class="text-2xl md:text-3xl font-serif font-bold text-foreground mb-3">{activeCategory.headline}</h2>
+            <p class="text-muted-foreground leading-relaxed">{activeCategory.description}</p>
+            <a href={`/services/${activeCategory.slug}`} class="inline-flex items-center gap-2 mt-4 text-sm font-bold text-primary hover:underline">
+              View full {activeCategory.name} page <ArrowRight className="h-3 w-3" />
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {activeCategory.subServices.map((sub) => (
+              <a href={`/services/${activeCategory.slug}/${sub.slug}`}>
+                <div class="group relative bg-foreground rounded-2xl overflow-hidden cursor-pointer h-72 hover:scale-[1.02] transition-transform duration-300">
+                  <img
+                    src={optimizeImageSrc(sub.image, 800)}
+                    alt={`${sub.name} locksmith service`}
+                    loading="lazy"
+                    decoding="async"
+                    class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-55 group-hover:scale-105 transition-all duration-500"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                  <div class="absolute inset-0 flex flex-col justify-end p-6">
+                    <h3 class="text-xl font-serif font-bold text-white mb-2">{sub.name}</h3>
+                    <p class="text-white/60 text-sm mb-4 line-clamp-2">{sub.shortDesc}</p>
+                    <div class="flex items-center justify-between">
+                      <span class="flex items-center gap-1 text-white/50 text-xs font-semibold"><Clock className="h-3 w-3" />{sub.responseTime}</span>
+                      <span class="flex items-center gap-1 text-accent text-xs font-bold group-hover:gap-2 transition-all">
+                        Learn More <ArrowRight className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div class="border-t border-border/40 pt-12">
+        <p class="text-center text-sm font-bold uppercase tracking-widest text-muted-foreground mb-6">All Service Categories</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {categories.map((cat) => (
+            <a href={`/services/${cat.slug}`}>
+              <div class="group relative rounded-2xl overflow-hidden cursor-pointer h-36">
+                <img
+                  src={optimizeImageSrc(cat.heroImage, 800)}
+                  alt={`${cat.name} locksmith category`}
+                  loading="lazy"
+                  decoding="async"
+                  class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                <div class="absolute inset-0 flex flex-col justify-end p-4">
+                  <p class="text-xl mb-1">{cat.emoji}</p>
+                  <h3 class="text-sm font-bold text-white leading-tight">{cat.name}</h3>
+                  <p class="text-white/50 text-xs">{cat.subServices.length} services</p>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 bg-muted/20 border-y border-border/40">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-xl font-serif font-bold text-foreground">Priority Service Areas</h2>
+        <a href="/sitemap" class="text-sm font-semibold text-primary hover:underline">Full Sitemap</a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {PRIORITY_SERVICE_LOCATION_LINKS.slice(0, 9).map((item) => (
+          <a href={item.href} class="rounded-lg border border-border px-4 py-3 text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <EmergencyCTA />
+</BaseLayout>

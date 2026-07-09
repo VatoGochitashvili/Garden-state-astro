@@ -1,0 +1,53 @@
+---
+import { Phone, Clock, ShieldCheck } from "lucide-react";
+import { BookingForm } from "@/components/shared/BookingForm";
+---
+
+<section class="py-16 border-t border-border/30" style="background: #0c1410;">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <p class="text-accent font-bold uppercase tracking-widest text-xs mb-2">Free Quote · No Obligation</p>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Need a Locksmith?</h2>
+        <p class="text-white/60 text-lg mb-8 leading-relaxed">
+          Our licensed NJ technicians are standing by 7 AM – 10 PM. Tell us what you need and we'll call you back within minutes — satisfaction guaranteed on every job.
+        </p>
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full bg-primary/30 flex items-center justify-center shrink-0">
+              <Phone className="h-5 w-5 text-accent" />
+            </div>
+            <div>
+              <p class="text-white font-bold text-sm">Call Direct</p>
+              <a href="tel:8565880580" class="text-accent font-bold text-lg hover:underline">(856) 588-0580</a>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full bg-primary/30 flex items-center justify-center shrink-0">
+              <Clock className="h-5 w-5 text-accent" />
+            </div>
+            <div>
+              <p class="text-white font-bold text-sm">Fast Local Dispatch</p>
+              <p class="text-white/50 text-sm">Emergency dispatch across all of NJ</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full bg-primary/30 flex items-center justify-center shrink-0">
+              <ShieldCheck className="h-5 w-5 text-accent" />
+            </div>
+            <div>
+              <p class="text-white font-bold text-sm">Licensed & Bonded</p>
+              <p class="text-white/50 text-sm">NJ state licensed, background-checked techs</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 p-8" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(12px);">
+        <p class="text-accent font-bold uppercase tracking-widest text-xs mb-1">Request Service</p>
+        <h3 class="text-xl font-serif font-bold text-white mb-5">Get a Free Quote</h3>
+        <BookingForm client:visible darkBg />
+      </div>
+    </div>
+  </div>
+</section>
