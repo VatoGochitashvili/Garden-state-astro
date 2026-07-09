@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import "leaflet/dist/leaflet.css";
 import { locations as ALL_LOCATIONS } from "@/data/locations";
 
 const SLUG_BY_NAME = new Map(ALL_LOCATIONS.map((l) => [l.name, l.slug]));
@@ -58,7 +59,7 @@ export function ServiceAreaMap() {
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    Promise.all([import("leaflet"), import("leaflet/dist/leaflet.css" as string)]).then(([L]) => {
+    import("leaflet").then((L) => {
       if (!mapRef.current || mapInstanceRef.current) return;
 
       const map = L.map(mapRef.current, {
