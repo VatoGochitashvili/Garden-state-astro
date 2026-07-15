@@ -1464,7 +1464,7 @@ export const locations: Location[] = [
     }
   },
   {
-    slug: "springfield-township-burlington", name: "Springfield", county: "Burlington County", state: "NJ", zipCodes: ["08086"],
+    slug: "springfield-township", name: "Springfield", county: "Burlington County", state: "NJ", zipCodes: ["08086"],
     nearbyLocations: ["westampton", "mount-holly", "hainesport"], population: "3,200",
     description: "A quiet agricultural township in Burlington County.",
     profile: {
