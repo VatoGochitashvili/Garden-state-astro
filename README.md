@@ -1,43 +1,45 @@
-# Astro Starter Kit: Minimal
+# Garden State Locksmith — Astro site
 
-```sh
-npm create astro@latest -- --template minimal
+Static AstroJS site (~4,000 prerendered pages) with programmatic local SEO for
+New Jersey towns × locksmith services. Zero-JS content; React islands only for
+the mobile menu, booking form, and service-area map.
+
+## Develop
+
+```bash
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # outputs static site to dist/
+npm run preview    # serve the built dist/ locally
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Deploy (Cloudflare Pages)
 
-## 🚀 Project Structure
+This repo is built for **Cloudflare Pages** (not a Worker — the contact form in
+`functions/api/contact.ts` is a Pages Function and only runs on Pages).
 
-Inside of your Astro project, you'll see the following folders and files:
+1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**
+   → select this repo.
+2. Build command: `npm run build`  ·  Build output directory: `dist`
+3. Env var (Settings → Variables & Secrets, type **Secret**):
+   `RESEND_API_KEY` — for the contact/booking form email notifications.
+   (Without it, the form returns a graceful error; pages still work.)
+4. Attach the real domain `gardenstatelocksmithnj.com` as a custom domain.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+> If the GitHub repo owner changes, Cloudflare loses its Git connection —
+> the new owner must reconnect the repo (re-authorize the Cloudflare GitHub
+> App on their account) for auto-deploys to resume.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Go-live SEO checklist
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- [ ] Point `gardenstatelocksmithnj.com` DNS at the Pages project (canonicals
+      already target this domain).
+- [ ] Verify the site in **Google Search Console**.
+- [ ] Submit `sitemap-index.xml` in Search Console.
+- [ ] Confirm the contact form submits (needs `RESEND_API_KEY` + Pages project).
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Content
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+All page content is data-driven — edit the files in `src/data/`:
+`locations.ts`, `categories.ts`, `services.ts`, `blogPosts.ts`. Pages regenerate
+on the next build.
