@@ -28,7 +28,10 @@ const {
   hideCtas = false,
 } = Astro.props;
 
-const canonicalUrl = canonical ? `${DOMAIN}${canonical}` : `${DOMAIN}${Astro.url.pathname}`;
+// Normalize to a single trailing slash so canonical matches the sitemap + served URL form.
+const rawPath = canonical ?? Astro.url.pathname;
+const normalizedPath = rawPath === "/" ? "/" : `/${rawPath.replace(/^\/+|\/+$/g, "")}/`;
+const canonicalUrl = `${DOMAIN}${normalizedPath}`;
 const resolvedImage = imageUrl ?? `${DOMAIN}/opengraph.jpg`;
 const ogImage = resolvedImage.startsWith("http") ? resolvedImage : `${DOMAIN}${resolvedImage}`;
 
