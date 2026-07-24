@@ -37,7 +37,18 @@ const schema = {
 };
 ---
 
-<BaseLayout title={post.metaTitle} description={post.metaDescription} canonical={`/blog/${post.slug}`} schema={schema}>
+<BaseLayout
+  title={post.metaTitle}
+  description={post.metaDescription}
+  canonical={`/blog/${post.slug}`}
+  ogType="article"
+  schema={schema}
+  breadcrumbs={[
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog/" },
+    { name: post.title, path: `/blog/${post.slug}/` },
+  ]}
+>
   <div class="relative bg-primary text-primary-foreground py-16 overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
       <img

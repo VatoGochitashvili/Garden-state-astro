@@ -10,6 +10,7 @@ import { categories } from "@/data/categories";
 import { locations } from "@/data/locations";
 import { PRIORITY_SERVICE_LOCATION_LINKS } from "@/data/indexingPriority";
 import { optimizeImageSrc } from "@/lib/image";
+import { websiteSchema, organizationSchema, faqSchema } from "@/lib/seo";
 import { Phone, CheckCircle2, ArrowRight, ShieldCheck, MapPin } from "lucide-react";
 import heroPhoto from "@/assets/camden-hero-optimized.webp";
 
@@ -32,12 +33,19 @@ const faqs = [
   { question: "Can you make a new car key without the original?", answer: "Yes! We have advanced equipment to cut and program new keys, fobs, and transponders for almost all vehicle makes and models directly on-site, even if you've lost all original keys." },
   { question: "What areas of New Jersey do you serve?", answer: "We serve all of New Jersey including Camden, Burlington, Gloucester, Mercer, Ocean, Monmouth, Essex, Hudson, Bergen, and Passaic Counties. If you're in NJ, we can reach you." },
 ];
+
+const homeSchema = [
+  websiteSchema(),
+  organizationSchema(),
+  faqSchema(faqs.map((f) => ({ q: f.question, a: f.answer }))),
+];
 ---
 
 <BaseLayout
   title="Garden State Locksmith | Licensed NJ Locksmith Services"
   description="Fast, reliable, and professional locksmith services across New Jersey. Emergency lockouts, residential, commercial, and automotive locksmith. Call (856) 588-0580."
   canonical="/"
+  schema={homeSchema}
 >
   <!-- Split Hero -->
   <div class="relative overflow-hidden text-white" style="background: #0c1410;">

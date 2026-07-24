@@ -2,6 +2,31 @@ export const DOMAIN = "https://gardenstatelocksmithnj.com";
 export const PHONE_DISPLAY = "(856) 588-0580";
 export const PHONE_TEL = "+18565880580";
 
+export const organizationSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${DOMAIN}/#organization`,
+  name: "Garden State Locksmith",
+  url: DOMAIN,
+  logo: `${DOMAIN}/icon-96.png`,
+  image: `${DOMAIN}/opengraph.jpg`,
+  telephone: PHONE_TEL,
+  areaServed: "New Jersey",
+  sameAs: [
+    "https://www.facebook.com/gardenstate-locksmith",
+    "https://www.google.com/maps/place/Garden+State+Locksmith",
+  ],
+});
+
+export const websiteSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${DOMAIN}/#website`,
+  url: DOMAIN,
+  name: "Garden State Locksmith",
+  publisher: { "@id": `${DOMAIN}/#organization` },
+});
+
 export const localBusinessSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Locksmith",

@@ -60,6 +60,12 @@ const { kind } = Astro.props;
         canonical={`/services/${category.slug}/${subService.slug}`}
         imageUrl={subService.image}
         schema={schemaData}
+        breadcrumbs={[
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services/" },
+          { name: category.name, path: `/services/${category.slug}/` },
+          { name: subService.name, path: `/services/${category.slug}/${subService.slug}/` },
+        ]}
       >
         <div class="relative min-h-[380px] flex items-end overflow-hidden bg-foreground">
           <img
@@ -286,7 +292,18 @@ const { kind } = Astro.props;
     };
 
     return (
-      <BaseLayout title={content.metaTitle} description={content.metaDescription} canonical={`/services/${service.slug}/${location.slug}`} schema={schema}>
+      <BaseLayout
+        title={content.metaTitle}
+        description={content.metaDescription}
+        canonical={`/services/${service.slug}/${location.slug}`}
+        schema={schema}
+        breadcrumbs={[
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services/" },
+          { name: service.name, path: `/services/${service.slug}/` },
+          { name: location.name, path: `/services/${service.slug}/${location.slug}/` },
+        ]}
+      >
         <div class="relative overflow-hidden" style="background: #0c1410; min-height: 520px;">
           <img src="/van-bg.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" />
           <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/75 pointer-events-none" />

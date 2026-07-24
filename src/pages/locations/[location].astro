@@ -31,6 +31,11 @@ const schema = {
   description={`Need a reliable locksmith in ${location.name}, NJ? Garden State Locksmith provides fast emergency, residential, and auto services in the ${location.zipCodes[0]} area.`}
   canonical={`/locations/${location.slug}`}
   schema={schema}
+  breadcrumbs={[
+    { name: "Home", path: "/" },
+    { name: "Locations", path: "/locations/" },
+    { name: location.name, path: `/locations/${location.slug}/` },
+  ]}
 >
   <div class="relative overflow-hidden" style="background: #0c1410; min-height: 520px;">
     <img src="/van-bg.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" />

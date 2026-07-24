@@ -94,7 +94,20 @@ const faqSchema = {
 };
 ---
 
-<BaseLayout title={metaTitle} description={metaDescription} canonical={`/services/${category.slug}/${subService.slug}/${location.slug}`} imageUrl={heroBg} schema={[schema, faqSchema]}>
+<BaseLayout
+  title={metaTitle}
+  description={metaDescription}
+  canonical={`/services/${category.slug}/${subService.slug}/${location.slug}`}
+  imageUrl={heroBg}
+  schema={[schema, faqSchema]}
+  breadcrumbs={[
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services/" },
+    { name: category.name, path: `/services/${category.slug}/` },
+    { name: subService.name, path: `/services/${category.slug}/${subService.slug}/` },
+    { name: location.name, path: `/services/${category.slug}/${subService.slug}/${location.slug}/` },
+  ]}
+>
   <!-- Hero -->
   <div class="relative min-h-[400px] flex items-end overflow-hidden" style="background: #0c1410;">
     <img
