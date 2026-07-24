@@ -67,7 +67,7 @@ export function makeTitle(sub: SubService, loc: Location, seed: number): string 
     `${loc.name} ${sub.name} | 7 AM – 10 PM Licensed NJ Locksmith — Garden State`,
     `${sub.name} — ${loc.name}, ${loc.county} | Garden State Locksmith NJ`,
     `Trusted ${sub.name} in ${loc.name}, New Jersey | Garden State Locksmith`,
-    `${sub.name} Service in ${loc.name}, NJ | Garden State Locksmith`,
+    `Fast ${sub.name} in ${loc.name}, ${loc.county} | Garden State Locksmith`,
   ];
   return pick(variants, seed);
 }
