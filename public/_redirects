@@ -1,2 +1,53 @@
+# Springfield slug cleanup
 /locations/springfield-township-burlington/ /locations/springfield-township/ 301
 /locations/springfield-township-burlington /locations/springfield-township/ 301
+
+# ── Flat service pages consolidated into category sub-services ──────────────
+# These duplicated the /services/{category}/{sub}/ pages (same search intent,
+# roughly half the content), so Google indexed only one of each pair. Removing
+# them ends the cannibalisation. Exact hub rules MUST precede the /* splats.
+
+/services/lockout-services/ /services/emergency/house-lockout/ 301
+/services/lockout-services/* /services/emergency/house-lockout/:splat 301
+
+/services/emergency-locksmith/ /services/emergency/ 301
+/services/emergency-locksmith/* /services/emergency/house-lockout/:splat 301
+
+/services/commercial-locksmith/ /services/commercial/ 301
+/services/commercial-locksmith/* /services/commercial/commercial-lock-change/:splat 301
+
+/services/lock-installation/ /services/residential/lock-installation/ 301
+/services/lock-installation/* /services/residential/lock-installation/:splat 301
+
+/services/lock-repair/ /services/residential/lock-repair/ 301
+/services/lock-repair/* /services/residential/lock-repair/:splat 301
+
+/services/deadbolt-installation/ /services/residential/deadbolt-installation/ 301
+/services/deadbolt-installation/* /services/residential/deadbolt-installation/:splat 301
+
+/services/key-duplication/ /services/residential/key-duplication/ 301
+/services/key-duplication/* /services/residential/key-duplication/:splat 301
+
+/services/rekeying-services/ /services/residential/lock-rekeying/ 301
+/services/rekeying-services/* /services/residential/lock-rekeying/:splat 301
+
+/services/master-key-systems/ /services/commercial/master-key-systems/ 301
+/services/master-key-systems/* /services/commercial/master-key-systems/:splat 301
+
+/services/safe-opening/ /services/commercial/safe-opening/ 301
+/services/safe-opening/* /services/commercial/safe-opening/:splat 301
+
+/services/safe-installation/ /services/commercial/safe-installation/ 301
+/services/safe-installation/* /services/commercial/safe-installation/:splat 301
+
+/services/car-lockout-service/ /services/automotive/car-lockout/ 301
+/services/car-lockout-service/* /services/automotive/car-lockout/:splat 301
+
+/services/automotive-key-replacement/ /services/automotive/car-key-replacement/ 301
+/services/automotive-key-replacement/* /services/automotive/car-key-replacement/:splat 301
+
+/services/transponder-key-programming/ /services/automotive/transponder-key-programming/ 301
+/services/transponder-key-programming/* /services/automotive/transponder-key-programming/:splat 301
+
+/services/ignition-repair/ /services/automotive/ignition-repair/ 301
+/services/ignition-repair/* /services/automotive/ignition-repair/:splat 301

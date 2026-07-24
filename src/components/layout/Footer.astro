@@ -1,11 +1,23 @@
 ---
 import { Phone, MapPin, Clock, ShieldCheck, Mail } from "lucide-react";
-import { services } from "@/data/services";
+import { categories } from "@/data/categories";
 import { locations } from "@/data/locations";
 import logoPath from "@/assets/footer-logo.png";
 
 const topLocations = locations.slice(0, 12);
-const mainServices = services.slice(0, 6);
+// Most-searched sub-services, linked at their canonical category paths.
+const mainServices = [
+  ["emergency", "house-lockout"],
+  ["emergency", "car-lockout"],
+  ["residential", "lock-rekeying"],
+  ["residential", "deadbolt-installation"],
+  ["automotive", "car-key-replacement"],
+  ["commercial", "commercial-lock-change"],
+].flatMap(([catSlug, subSlug]) => {
+  const cat = categories.find((c) => c.slug === catSlug);
+  const sub = cat?.subServices.find((s) => s.slug === subSlug);
+  return sub ? [{ name: sub.name, href: `/services/${catSlug}/${subSlug}/` }] : [];
+});
 const year = new Date().getFullYear();
 ---
 
@@ -82,7 +94,7 @@ const year = new Date().getFullYear();
         <ul class="flex flex-col gap-2 text-sm">
           {mainServices.map((s) => (
             <li>
-              <a href={`/services/${s.slug}/`} class="hover:text-accent transition-colors">{s.name}</a>
+              <a href={s.href} class="hover:text-accent transition-colors">{s.name}</a>
             </li>
           ))}
           <li><a href="/residential-locksmith/" class="hover:text-accent transition-colors">Residential Locksmith</a></li>

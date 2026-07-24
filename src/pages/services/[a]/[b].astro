@@ -9,20 +9,17 @@ import { locations } from "@/data/locations";
 import { generateServiceLocationContent } from "@/data/content";
 import { Phone, Clock, CheckCircle2, ChevronRight, ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 
+// NOTE: the flat `/services/{service}/{town}` pages were removed — they targeted
+// the same search intent as `/services/{category}/{sub}/{town}` with roughly half
+// the content, so Google treated them as duplicates and indexed only one.
+// They are 301-redirected to their category equivalent via public/_redirects.
 export function getStaticPaths() {
-  const subServicePaths = categories.flatMap((cat) =>
+  return categories.flatMap((cat) =>
     cat.subServices.map((sub) => ({
       params: { a: cat.slug, b: sub.slug },
       props: { kind: "subservice" as const, category: cat, subService: sub },
     })),
   );
-  const serviceLocationPaths = services.flatMap((svc) =>
-    locations.map((loc) => ({
-      params: { a: svc.slug, b: loc.slug },
-      props: { kind: "servicelocation" as const, service: svc, location: loc },
-    })),
-  );
-  return [...subServicePaths, ...serviceLocationPaths];
 }
 
 const { kind } = Astro.props;

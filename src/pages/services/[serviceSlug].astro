@@ -8,16 +8,14 @@ import { locations } from "@/data/locations";
 import { optimizeImageSrc } from "@/lib/image";
 import { Clock, ArrowRight, ChevronRight, Phone } from "lucide-react";
 
+// NOTE: the flat `/services/{service}` hubs were removed — each duplicated a
+// category sub-service hub targeting the same intent. 301-redirected via
+// public/_redirects to their category equivalent.
 export function getStaticPaths() {
-  const categoryPaths = categories.map((cat) => ({
+  return categories.map((cat) => ({
     params: { serviceSlug: cat.slug },
     props: { kind: "category" as const, category: cat },
   }));
-  const servicePaths = services.map((svc) => ({
-    params: { serviceSlug: svc.slug },
-    props: { kind: "service" as const, service: svc },
-  }));
-  return [...categoryPaths, ...servicePaths];
 }
 
 const { kind } = Astro.props;
