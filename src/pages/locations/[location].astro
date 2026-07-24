@@ -48,7 +48,7 @@ const schema = {
           <nav class="flex items-center gap-1 text-white/40 text-xs font-semibold uppercase tracking-wide mb-5">
             <a href="/" class="hover:text-white transition-colors">Home</a>
             <ChevronRight className="h-3 w-3" />
-            <a href="/locations" class="hover:text-white transition-colors">Locations</a>
+            <a href="/locations/" class="hover:text-white transition-colors">Locations</a>
             <ChevronRight className="h-3 w-3" />
             <span class="text-accent">{location.name}</span>
           </nav>
@@ -125,14 +125,14 @@ const schema = {
                   <p class="text-sm text-muted-foreground">{cat.subServices.length} services in {location.name}</p>
                 </div>
               </div>
-              <a href={`/services/${cat.slug}`} class="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-accent transition-colors">
+              <a href={`/services/${cat.slug}/`} class="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-accent transition-colors">
                 View category <ArrowRight className="h-4 w-4" />
               </a>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {cat.subServices.map((sub) => (
-                <a href={`/services/${cat.slug}/${sub.slug}/${location.slug}`} class="group flex items-start gap-3 bg-background border border-border/60 rounded-xl p-4 hover:border-accent hover:shadow-md transition-all">
+                <a href={`/services/${cat.slug}/${sub.slug}/${location.slug}/`} class="group flex items-start gap-3 bg-background border border-border/60 rounded-xl p-4 hover:border-accent hover:shadow-md transition-all">
                   <div class="shrink-0 h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center text-lg group-hover:bg-accent/15 transition-colors">{cat.emoji}</div>
                   <div class="flex-1 min-w-0">
                     <p class="font-serif font-bold text-sm text-foreground leading-tight mb-1 group-hover:text-primary transition-colors">{sub.name}</p>

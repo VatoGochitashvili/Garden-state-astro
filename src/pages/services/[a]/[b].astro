@@ -82,9 +82,9 @@ const { kind } = Astro.props;
             <nav class="flex items-center gap-2 text-white/50 text-xs font-semibold uppercase tracking-wide mb-5 flex-wrap">
               <a href="/" class="hover:text-white transition-colors">Home</a>
               <ChevronRight className="h-3 w-3" />
-              <a href="/services" class="hover:text-white transition-colors">Services</a>
+              <a href="/services/" class="hover:text-white transition-colors">Services</a>
               <ChevronRight className="h-3 w-3" />
-              <a href={`/services/${category.slug}`} class="hover:text-white transition-colors">{category.name}</a>
+              <a href={`/services/${category.slug}/`} class="hover:text-white transition-colors">{category.name}</a>
               <ChevronRight className="h-3 w-3" />
               <span class="text-accent">{subService.name}</span>
             </nav>
@@ -206,12 +206,12 @@ const { kind } = Astro.props;
                     <h3 class="font-bold text-sm uppercase tracking-wide text-muted-foreground mb-4">More {category.name}</h3>
                     <div class="space-y-2">
                       {relatedServices.map((s: typeof category.subServices[number]) => (
-                        <a href={`/services/${category.slug}/${s.slug}`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group">
+                        <a href={`/services/${category.slug}/${s.slug}/`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group">
                           <span class="text-sm font-medium text-foreground group-hover:text-primary">{s.name}</span>
                           <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary" />
                         </a>
                       ))}
-                      <a href={`/services/${category.slug}`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-2">
+                      <a href={`/services/${category.slug}/`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-2">
                         <span class="text-sm font-bold text-primary">View all {category.name}</span>
                         <ArrowRight className="h-3 w-3 text-primary" />
                       </a>
@@ -245,7 +245,7 @@ const { kind } = Astro.props;
                   </div>
                   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
                     {countyLocs.map((loc) => (
-                      <a href={`/services/${category.slug}/${subService.slug}/${loc.slug}`} class="group flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border/50 bg-background hover:border-primary/40 hover:bg-primary/5 transition-all">
+                      <a href={`/services/${category.slug}/${subService.slug}/${loc.slug}/`} class="group flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border/50 bg-background hover:border-primary/40 hover:bg-primary/5 transition-all">
                         <div class="h-1.5 w-1.5 rounded-full bg-primary/50 group-hover:bg-primary shrink-0 transition-colors" />
                         <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-tight">{loc.name}</span>
                       </a>
@@ -256,7 +256,7 @@ const { kind } = Astro.props;
             })}
 
             <div class="mt-8 text-center">
-              <a href="/locations" class="inline-flex items-center gap-2 border border-primary text-primary font-bold px-6 py-3 rounded-full hover:bg-primary/5 transition-colors text-sm">
+              <a href="/locations/" class="inline-flex items-center gap-2 border border-primary text-primary font-bold px-6 py-3 rounded-full hover:bg-primary/5 transition-colors text-sm">
                 <MapPin className="h-4 w-4" /> View All Location Pages
               </a>
             </div>
@@ -315,9 +315,9 @@ const { kind } = Astro.props;
                 <nav class="flex items-center gap-1 text-white/40 text-xs font-semibold uppercase tracking-wide mb-5 flex-wrap">
                   <a href="/" class="hover:text-white transition-colors">Home</a>
                   <ChevronRight className="h-3 w-3" />
-                  <a href="/services" class="hover:text-white transition-colors">Services</a>
+                  <a href="/services/" class="hover:text-white transition-colors">Services</a>
                   <ChevronRight className="h-3 w-3" />
-                  <a href={`/services/${service.slug}`} class="hover:text-white transition-colors">{service.name}</a>
+                  <a href={`/services/${service.slug}/`} class="hover:text-white transition-colors">{service.name}</a>
                   <ChevronRight className="h-3 w-3" />
                   <span class="text-accent">{location.name}</span>
                 </nav>
@@ -382,14 +382,14 @@ const { kind } = Astro.props;
                   <ul class="space-y-3">
                     {nearbyLocations.map((nl: typeof locations[number]) => (
                       <li>
-                        <a href={`/services/${service.slug}/${nl.slug}`} class="flex items-center text-primary hover:text-accent transition-colors font-medium">
+                        <a href={`/services/${service.slug}/${nl.slug}/`} class="flex items-center text-primary hover:text-accent transition-colors font-medium">
                           <MapPin className="h-4 w-4 mr-2" />
                           {service.name} in {nl.name}
                         </a>
                       </li>
                     ))}
                     <li class="pt-3 border-t border-border mt-3">
-                      <a href={`/locations/${location.slug}`} class="text-foreground font-semibold hover:underline">See all services in {location.name} &rarr;</a>
+                      <a href={`/locations/${location.slug}/`} class="text-foreground font-semibold hover:underline">See all services in {location.name} &rarr;</a>
                     </li>
                   </ul>
                 </div>

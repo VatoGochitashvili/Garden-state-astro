@@ -124,11 +124,11 @@ const faqSchema = {
       <nav class="flex items-center gap-1.5 text-white/50 text-xs font-semibold uppercase tracking-wide mb-5 flex-wrap">
         <a href="/" class="hover:text-white transition-colors">Home</a>
         <ChevronRight className="h-3 w-3" />
-        <a href="/services" class="hover:text-white transition-colors">Services</a>
+        <a href="/services/" class="hover:text-white transition-colors">Services</a>
         <ChevronRight className="h-3 w-3" />
-        <a href={`/services/${category.slug}`} class="hover:text-white transition-colors">{category.name}</a>
+        <a href={`/services/${category.slug}/`} class="hover:text-white transition-colors">{category.name}</a>
         <ChevronRight className="h-3 w-3" />
-        <a href={`/services/${category.slug}/${subService.slug}`} class="hover:text-white transition-colors">{subService.name}</a>
+        <a href={`/services/${category.slug}/${subService.slug}/`} class="hover:text-white transition-colors">{subService.name}</a>
         <ChevronRight className="h-3 w-3" />
         <span class="text-accent">{location.name}</span>
       </nav>
@@ -321,7 +321,7 @@ const faqSchema = {
                 {nearbyLocations.map((nl, i) => {
                   const anchorFn = nearbyAnchorVariants[(seed + i) % nearbyAnchorVariants.length];
                   return (
-                    <a href={`/services/${category.slug}/${subService.slug}/${nl.slug}`} class="flex items-center justify-between p-4 rounded-xl border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all group">
+                    <a href={`/services/${category.slug}/${subService.slug}/${nl.slug}/`} class="flex items-center justify-between p-4 rounded-xl border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all group">
                       <div class="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-primary shrink-0" />
                         <div>
@@ -389,12 +389,12 @@ const faqSchema = {
               <h3 class="font-bold text-sm uppercase tracking-wide text-muted-foreground mb-4">More {category.name} in {location.name}</h3>
               <div class="space-y-2">
                 {relatedServices.map((s) => (
-                  <a href={`/services/${category.slug}/${s.slug}/${location.slug}`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group">
+                  <a href={`/services/${category.slug}/${s.slug}/${location.slug}/`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group">
                     <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug">{s.name} in {location.name}</span>
                     <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary shrink-0 ml-2" />
                   </a>
                 ))}
-                <a href={`/services/${category.slug}`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-1">
+                <a href={`/services/${category.slug}/`} class="flex items-center justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-1">
                   <span class="text-sm font-bold text-primary">All {category.name} →</span>
                 </a>
               </div>
@@ -405,12 +405,12 @@ const faqSchema = {
             <h3 class="font-bold text-sm uppercase tracking-wide text-muted-foreground mb-4">Other Locksmith Services in {location.name}</h3>
             <div class="space-y-2">
               {otherCategories.map((cat) => (
-                <a href={`/locations/${location.slug}`} class="flex items-center gap-2 p-3 rounded-xl hover:bg-muted/50 transition-colors group">
+                <a href={`/locations/${location.slug}/`} class="flex items-center gap-2 p-3 rounded-xl hover:bg-muted/50 transition-colors group">
                   <span class="text-base">{cat.emoji}</span>
                   <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{cat.name} in {location.name}</span>
                 </a>
               ))}
-              <a href={`/locations/${location.slug}`} class="flex items-center gap-2 p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-1">
+              <a href={`/locations/${location.slug}/`} class="flex items-center gap-2 p-3 rounded-xl hover:bg-muted/50 transition-colors group mt-1">
                 <span class="text-sm font-bold text-primary">All Services in {location.name} →</span>
               </a>
             </div>

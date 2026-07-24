@@ -24,12 +24,12 @@ import { PRIORITY_SERVICE_LOCATION_LINKS } from "@/data/indexingPriority";
           <ul class="space-y-2 text-sm">
             {[
               ["/", "Home"],
-              ["/services", "Services"],
-              ["/locations", "Locations"],
-              ["/about", "About"],
-              ["/contact", "Contact"],
-              ["/blog", "Blog"],
-              ["/faq", "FAQ"],
+              ["/services/", "Services"],
+              ["/locations/", "Locations"],
+              ["/about/", "About"],
+              ["/contact/", "Contact"],
+              ["/blog/", "Blog"],
+              ["/faq/", "FAQ"],
             ].map(([href, label]) => (
               <li><a href={href} class="text-primary hover:underline">{label}</a></li>
             ))}
@@ -40,14 +40,14 @@ import { PRIORITY_SERVICE_LOCATION_LINKS } from "@/data/indexingPriority";
           <h2 class="text-xl font-serif font-bold mb-4">Service Hubs</h2>
           <ul class="space-y-2 text-sm">
             {categories.map((cat) => (
-              <li><a href={`/services/${cat.slug}`} class="text-primary hover:underline">{cat.name}</a></li>
+              <li><a href={`/services/${cat.slug}/`} class="text-primary hover:underline">{cat.name}</a></li>
             ))}
           </ul>
           <h3 class="text-sm font-bold uppercase tracking-wide text-muted-foreground mt-6 mb-2">Sub-services</h3>
           <ul class="space-y-2 text-sm max-h-72 overflow-auto pr-1">
             {categories.flatMap((cat) =>
               cat.subServices.map((sub) => (
-                <li><a href={`/services/${cat.slug}/${sub.slug}`} class="text-primary hover:underline">{sub.name}</a></li>
+                <li><a href={`/services/${cat.slug}/${sub.slug}/`} class="text-primary hover:underline">{sub.name}</a></li>
               )),
             )}
           </ul>
@@ -67,7 +67,7 @@ import { PRIORITY_SERVICE_LOCATION_LINKS } from "@/data/indexingPriority";
         <h2 class="text-xl font-serif font-bold mb-4">Locations</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-y-2 gap-x-4 text-sm">
           {locations.map((loc) => (
-            <a href={`/locations/${loc.slug}`} class="text-primary hover:underline">{loc.name}</a>
+            <a href={`/locations/${loc.slug}/`} class="text-primary hover:underline">{loc.name}</a>
           ))}
         </div>
       </div>
@@ -76,7 +76,7 @@ import { PRIORITY_SERVICE_LOCATION_LINKS } from "@/data/indexingPriority";
         <h2 class="text-xl font-serif font-bold mb-4">Blog Articles</h2>
         <ul class="space-y-2 text-sm">
           {blogPosts.map((post) => (
-            <li><a href={`/blog/${post.slug}`} class="text-primary hover:underline">{post.title}</a></li>
+            <li><a href={`/blog/${post.slug}/`} class="text-primary hover:underline">{post.title}</a></li>
           ))}
         </ul>
       </div>

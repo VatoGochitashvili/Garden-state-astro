@@ -130,12 +130,12 @@ const homeSchema = [
             From emergency lockouts to smart home upgrades — our NJ-licensed technicians cover every situation.
           </p>
         </div>
-        <a href="/services" class="shrink-0 inline-flex items-center justify-center rounded-md border border-primary text-primary hover:bg-primary/10 min-h-9 px-4 py-2 font-medium">View All Services</a>
+        <a href="/services/" class="shrink-0 inline-flex items-center justify-center rounded-md border border-primary text-primary hover:bg-primary/10 min-h-9 px-4 py-2 font-medium">View All Services</a>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
         {categories.map((cat) => (
-          <a href={`/services/${cat.slug}`}>
+          <a href={`/services/${cat.slug}/`}>
             <div class="group relative rounded-2xl overflow-hidden cursor-pointer h-64 hover:scale-[1.01] transition-transform duration-300">
               <img
                 src={optimizeImageSrc(cat.heroImage, 1200)}
@@ -179,7 +179,7 @@ const homeSchema = [
             <p class="text-muted-foreground">90+ cities across New Jersey, 40-mile radius from Camden</p>
           </div>
         </div>
-        <a href="/locations" class="inline-flex items-center justify-center gap-1 rounded-md border border-primary text-primary hover:bg-primary/10 text-sm px-4 py-2 font-medium">
+        <a href="/locations/" class="inline-flex items-center justify-center gap-1 rounded-md border border-primary text-primary hover:bg-primary/10 text-sm px-4 py-2 font-medium">
           View All Locations <ArrowRight className="h-4 w-4 ml-1" />
         </a>
       </div>
@@ -192,7 +192,7 @@ const homeSchema = [
     <div class="container mx-auto px-4">
       <div class="flex items-center justify-between mb-5">
         <h2 class="text-2xl font-serif font-bold text-foreground">Popular City + Service Pages</h2>
-        <a href="/sitemap" class="text-sm font-semibold text-primary hover:underline">View HTML Sitemap</a>
+        <a href="/sitemap/" class="text-sm font-semibold text-primary hover:underline">View HTML Sitemap</a>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {PRIORITY_SERVICE_LOCATION_LINKS.map((item) => (
@@ -267,7 +267,7 @@ const homeSchema = [
             <a href="tel:8565880580" class="flex items-center gap-2 bg-accent text-accent-foreground font-bold px-6 py-3 rounded-full hover:bg-accent/90 transition-colors">
               <Phone className="h-4 w-4" /> Dispatch Now
             </a>
-            <a href="/about" class="flex items-center gap-2 border border-background/30 text-background font-semibold px-6 py-3 rounded-full hover:bg-background/10 transition-colors">
+            <a href="/about/" class="flex items-center gap-2 border border-background/30 text-background font-semibold px-6 py-3 rounded-full hover:bg-background/10 transition-colors">
               Our Story →
             </a>
           </div>
@@ -303,7 +303,7 @@ const homeSchema = [
             Rapid-response locksmith service throughout Camden, Burlington, Gloucester, Mercer, Ocean, Monmouth, and every county in between.
           </p>
         </div>
-        <a href="/locations" class="shrink-0 inline-flex items-center justify-center rounded-md border border-primary text-primary hover:bg-primary/10 min-h-9 px-4 py-2 font-medium">View All Areas</a>
+        <a href="/locations/" class="shrink-0 inline-flex items-center justify-center rounded-md border border-primary text-primary hover:bg-primary/10 min-h-9 px-4 py-2 font-medium">View All Areas</a>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {topLocations.map((location) => (

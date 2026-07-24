@@ -101,7 +101,7 @@ export function ServiceAreaMap() {
       SERVICE_LOCATIONS.forEach(([lat, lng, name]) => {
         const isCamden = name === "Camden";
         const slug = slugify(name);
-        const href = `/locations/${slug}`;
+        const href = `/locations/${slug}/`;
 
         const marker = L.marker([lat, lng], {
           icon: isCamden ? hqIcon : dotIcon,

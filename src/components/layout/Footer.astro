@@ -82,14 +82,14 @@ const year = new Date().getFullYear();
         <ul class="flex flex-col gap-2 text-sm">
           {mainServices.map((s) => (
             <li>
-              <a href={`/services/${s.slug}`} class="hover:text-accent transition-colors">{s.name}</a>
+              <a href={`/services/${s.slug}/`} class="hover:text-accent transition-colors">{s.name}</a>
             </li>
           ))}
-          <li><a href="/residential-locksmith" class="hover:text-accent transition-colors">Residential Locksmith</a></li>
-          <li><a href="/commercial-locksmith" class="hover:text-accent transition-colors">Commercial Locksmith</a></li>
-          <li><a href="/automotive-locksmith" class="hover:text-accent transition-colors">Automotive Locksmith</a></li>
+          <li><a href="/residential-locksmith/" class="hover:text-accent transition-colors">Residential Locksmith</a></li>
+          <li><a href="/commercial-locksmith/" class="hover:text-accent transition-colors">Commercial Locksmith</a></li>
+          <li><a href="/automotive-locksmith/" class="hover:text-accent transition-colors">Automotive Locksmith</a></li>
           <li>
-            <a href="/services" class="text-accent hover:underline font-semibold mt-1 inline-block">All Services &rarr;</a>
+            <a href="/services/" class="text-accent hover:underline font-semibold mt-1 inline-block">All Services &rarr;</a>
           </li>
         </ul>
       </div>
@@ -100,22 +100,22 @@ const year = new Date().getFullYear();
         <ul class="grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
           {topLocations.map((l) => (
             <li>
-              <a href={`/locations/${l.slug}`} class="hover:text-accent transition-colors">{l.name}</a>
+              <a href={`/locations/${l.slug}/`} class="hover:text-accent transition-colors">{l.name}</a>
             </li>
           ))}
         </ul>
-        <a href="/locations" class="text-accent hover:underline font-semibold mt-1 inline-block text-sm">All Locations &rarr;</a>
+        <a href="/locations/" class="text-accent hover:underline font-semibold mt-1 inline-block text-sm">All Locations &rarr;</a>
       </div>
 
       <!-- Company Col -->
       <div class="flex flex-col gap-3">
         <h3 class="text-lg font-serif font-bold text-accent mb-1">Company</h3>
         <ul class="flex flex-col gap-2 text-sm">
-          <li><a href="/about" class="hover:text-accent transition-colors">About Us</a></li>
-          <li><a href="/blog" class="hover:text-accent transition-colors">Security Blog</a></li>
-          <li><a href="/faq" class="hover:text-accent transition-colors">FAQ</a></li>
-          <li><a href="/contact" class="hover:text-accent transition-colors">Contact Us</a></li>
-          <li><a href="/emergency-locksmith" class="hover:text-accent transition-colors font-semibold">Emergency Service</a></li>
+          <li><a href="/about/" class="hover:text-accent transition-colors">About Us</a></li>
+          <li><a href="/blog/" class="hover:text-accent transition-colors">Security Blog</a></li>
+          <li><a href="/faq/" class="hover:text-accent transition-colors">FAQ</a></li>
+          <li><a href="/contact/" class="hover:text-accent transition-colors">Contact Us</a></li>
+          <li><a href="/emergency-locksmith/" class="hover:text-accent transition-colors font-semibold">Emergency Service</a></li>
         </ul>
       </div>
     </div>
@@ -123,7 +123,7 @@ const year = new Date().getFullYear();
     <div class="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
       <p>&copy; {year} Garden State Locksmith. All rights reserved. Serving New Jersey.</p>
       <div class="flex gap-4">
-        <a href="/sitemap" class="hover:text-primary-foreground">Sitemap</a>
+        <a href="/sitemap/" class="hover:text-primary-foreground">Sitemap</a>
       </div>
     </div>
   </div>

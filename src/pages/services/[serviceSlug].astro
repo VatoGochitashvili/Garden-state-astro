@@ -78,7 +78,7 @@ const { kind } = Astro.props;
             <nav class="flex items-center gap-2 text-white/50 text-xs font-semibold uppercase tracking-wide mb-5">
               <a href="/" class="hover:text-white transition-colors">Home</a>
               <ChevronRight className="h-3 w-3" />
-              <a href="/services" class="hover:text-white transition-colors">Services</a>
+              <a href="/services/" class="hover:text-white transition-colors">Services</a>
               <ChevronRight className="h-3 w-3" />
               <span class="text-accent">{category.name}</span>
             </nav>
@@ -111,7 +111,7 @@ const { kind } = Astro.props;
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {category.subServices.map((sub: typeof category.subServices[number]) => (
-                <a href={`/services/${category.slug}/${sub.slug}`}>
+                <a href={`/services/${category.slug}/${sub.slug}/`}>
                   <div class="group relative bg-foreground rounded-2xl overflow-hidden cursor-pointer h-72 hover:scale-[1.02] transition-transform duration-300">
                     <img
                       src={optimizeImageSrc(sub.image, 800)}
@@ -198,7 +198,7 @@ const { kind } = Astro.props;
             <p class="text-center text-sm font-bold uppercase tracking-widest text-muted-foreground mb-6">Other Locksmith Services</p>
             <div class="flex flex-wrap justify-center gap-3">
               {otherCats.map((c) => (
-                <a href={`/services/${c.slug}`} class="flex items-center gap-2 px-5 py-2.5 bg-background border border-border rounded-full text-sm font-bold hover:border-primary hover:text-primary transition-colors">
+                <a href={`/services/${c.slug}/`} class="flex items-center gap-2 px-5 py-2.5 bg-background border border-border rounded-full text-sm font-bold hover:border-primary hover:text-primary transition-colors">
                   {c.emoji} {c.name} Locksmith
                 </a>
               ))}
@@ -257,7 +257,7 @@ const { kind } = Astro.props;
                 <a href="tel:8565880580" class="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90 font-bold text-lg px-8 py-6 h-auto rounded-md transition-colors">
                   <Phone className="h-6 w-6" /> (856) 588-0580
                 </a>
-                <a href="/contact" class="inline-flex items-center justify-center gap-2 border border-white/30 text-white hover:bg-white/10 font-bold text-lg px-8 py-6 h-auto rounded-md transition-colors">Request a Quote</a>
+                <a href="/contact/" class="inline-flex items-center justify-center gap-2 border border-white/30 text-white hover:bg-white/10 font-bold text-lg px-8 py-6 h-auto rounded-md transition-colors">Request a Quote</a>
               </div>
             </div>
           </div>

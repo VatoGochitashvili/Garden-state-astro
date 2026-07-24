@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { location, serviceSlug } = Astro.props;
-const href = serviceSlug ? `/services/${serviceSlug}/${location.slug}` : `/locations/${location.slug}`;
+const href = serviceSlug ? `/services/${serviceSlug}/${location.slug}/` : `/locations/${location.slug}/`;
 ---
 
 <div class="flex flex-col h-full rounded-xl border bg-card text-card-foreground shadow hover:border-primary/50 transition-colors duration-300 group">
